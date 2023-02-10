@@ -24,6 +24,7 @@ local.properties
 *.nar
 *.ear
 *.zip
+!**/fixture/*.zip
 *.tar.gz
 *.rar
 
