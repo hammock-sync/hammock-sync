@@ -2,7 +2,7 @@ name: Hammock Sync CI - Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, feat/enable-ci ]
   pull_request:
     branches: [ main ]
 env: 
