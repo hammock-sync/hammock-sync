@@ -35,7 +35,7 @@ public class TestOptions {
      * basic auth.
      * It is not necessary to set SPECIFIED_COUCH to true in order to use this option.
      */
-    public static final String COUCH_URI = "http://admin:password@localhost:5984"; // System.getProperty("test.couch.uri");
+    public static final String COUCH_URI = System.getProperty("test.couch.uri");
 
     /**
      * If true, tests will run against an instance described by
