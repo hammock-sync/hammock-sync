@@ -1,0 +1,78 @@
+Hammock Sync project is a derivative work form Cloudant Sync for Android which has been abandoned by
+its original authors. Hammock Sync is a new effort for keeping this CouchDB Sync Client for Android
+and Java alive.
+
+Hammock Sync project is distributed under Apache-2.0 license in the same form that the original
+project and keeps the original copyright on those elements retrieved from the original project.
+
+Thanks to all that have contributed to the original project along his history.
+
+Contributors to https://github.com/cloudant/sync-android
+Rich Ellis
+Tom Blench
+Rhys Short
+Michael Rhodes
+Al Finkelstein
+Mike Rhodes
+Albert Finkelstein
+Bryn Harding
+Juanjo Rodriguez
+Dongsheng Wang
+Esteban Laver
+Johannes Jörg Schmidt
+Kim Stebel
+Matulis
+Sam Smith
+Adam Cox
+Denis Solonenko
+Dillon D Lees
+G Adam Cox
+Kevan Holdaway
+Petro Tiurin
+Contributors to https://github.com/couchbaselabs/TouchDB-Android
+Marty Schoch
+Traun Leyden
+cesine
+Chris Kelley
+Martin Häcker
+ddumont
+Brian Winfrey
+Chris Anderson
+Paul Mietz Egli
+Volker Mische
+Alexander Edge
+David K. Pham
+tk120404
+Contributors to https://github.com/cloudant/java-cloudant (cloudant-http lib)
+Rich Ellis
+mariobriggs
+Ahmed Yehia
+Rhys Short
+Esteban Laver
+ganeshkumarc
+Sam Smith
+lightcouch
+Ganesh K Choudhary
+Bryn Harding
+Tom Blench
+ahmedyha
+mario
+Bruno Haible
+Mike Rhodes
+Sebastien
+Carsten Behring
+Chris Snow
+Dave Grant
+Henry Abravanel
+Hiranya Samarasekera
+Majid Valipour
+Mark Wallace
+Michael Jacobsen
+Michael Rhodes
+Robert Newson
+Steven R. Loomis
+Valeriy.Vyrva
+dvberkel
+esrose
+iddo
+matthew.sargent

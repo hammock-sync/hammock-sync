@@ -1,0 +1,150 @@
+
+<!--
+  ~ Copyright (c) 2016 IBM Corp. All rights reserved.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
+  ~ except in compliance with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the
+  ~ License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+  ~ either express or implied. See the License for the specific language governing permissions
+  ~ and limitations under the License.
+  -->
+<!--
+A list of known findbugs issues that we cannot fix at this time.
+-->
+<FindBugsFilter>
+
+    <Match>
+        <Bug code="RV" pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />
+        <Class name="AttachmentManager"/>
+        <Method name="addAttachment" />
+    </Match>
+    <Match>
+        <Bug code="RV" pattern="RV_NEGATING_RESULT_OF_COMPARETO" />
+        <Class name="com.cloudant.sync.datastore.BasicDatastore$15" />
+    </Match>
+    <Match>
+        <Bug code="FE" pattern="FE_FLOATING_POINT_EQUALITY" />
+        <Class name="UnindexedMatcher"/>
+    </Match>
+    <Match>
+        <Bug code="NP" pattern="NP_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
+        <Class name="PushStrategy"/>
+        <Method name="missingRevisionsToJsonDocs"/>
+    </Match>
+    <Match>
+        <Bug code="REC" pattern="REC_CATCH_EXCEPTION" />
+        <Class name="CouchClient$ExecuteResult" />
+        <Method name="ExecuteResult" />
+    </Match>
+    <Match>
+        <Bug code="REC" pattern="REC_CATCH_EXCEPTION" />
+        <Class name="PullStrategy" />
+        <Method name="processOneChangesBatch" />
+    </Match>
+    <Match>
+        <Bug code="REC" pattern="REC_CATCH_EXCEPTION" />
+        <Class name="JSONUtils" />
+        <Method name="isValidJSON" />
+    </Match>
+
+    <Match>
+        <Bug code="REC" pattern="REC_CATCH_EXCEPTION" />
+        <Class name="com.cloudant.sync.internal.datastore.callables.ForceInsertCallable" />
+        <Method name="call" />
+    </Match>
+
+    <Match>
+        <Bug code="REC" pattern="REC_CATCH_EXCEPTION" />
+        <Class name="CouchClient$ExecuteResult" />
+    </Match>
+
+
+    <Match>
+        <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+        <Class name="LocalDocument" />
+        <Field name="docId" />
+    </Match>
+
+    <Match>
+        <Bug code="REC" pattern="REC_CATCH_EXCEPTION" />
+        <Class name="JSONUtils" />
+        <Mehtod name="deserialize" />
+    </Match>
+
+    <Match>
+        <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+        <Class name="DocumentModified" />
+        <Field name="newDocument" />
+    </Match>
+
+    <Match>
+        <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+        <Class name="DocumentModified" />
+        <Field name="prevDocument" />
+    </Match>
+
+    <Match>
+        <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+        <Class name="DocumentStoreModified" />
+        <Field name="dbName" />
+    </Match>
+
+    <Match>
+        <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+        <Class name="BulkGetRequest" />
+        <Field name="atts_since" />
+    </Match>
+
+    <Match>
+        <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+        <Class name="BulkGetRequest" />
+        <Field name="id" />
+    </Match>
+
+    <Match>
+        <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+        <Class name="BulkGetRequest" />
+        <Field name="rev" />
+    </Match>
+
+    <Match>
+        <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+        <Class name="ReplicationStrategyErrored" />
+        <Field name="replicationStrategy" />
+    </Match>
+
+    <Match>
+        <Bug code="UwF" pattern="URF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD" />
+        <Class name="CouchClient$MissingRevisions" />
+        <Field name="missing" />
+    </Match>
+
+    <Match>
+        <Bug code="UwF" pattern="URF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD" />
+        <Class name="CouchClient$MissingRevisions" />
+        <Field name="possible_ancestors" />
+    </Match>
+
+    <Match>
+        <Bug code="RECR" pattern="REC_CATCH_EXCEPTION" />
+        <Class name="ForceInsertCallable"/>
+        <Method name="call"/>
+    </Match>
+
+    <Match>
+        <Bug code="RCN" pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+        <Class name="Misc"/>
+        <Method name="checkNotNullOrEmpty" />
+    </Match>
+
+    <Match>
+        <Bug code="DB" pattern="DB_DUPLICATE_SWITCH_CLAUSES"/>
+        <Class name="CouchClient$ExecuteResult" />
+        <Method name="&lt;init&gt;"/>
+    </Match>
+
+</FindBugsFilter>

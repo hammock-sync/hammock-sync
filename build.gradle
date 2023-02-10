@@ -1,0 +1,11 @@
+repositories {
+    mavenCentral()
+}
+
+allprojects {
+    group = 'org.hammock'
+    version = new File(rootDir, 'VERSION').text.trim()
+    description = """hammock-sync"""
+    //if the version says "snapshot" anywhere assume it is not a release
+    //ext.isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
+}

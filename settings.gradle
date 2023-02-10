@@ -1,0 +1,3 @@
+include 'cloudant-http'
+include 'hammock-sync-datastore-core'
+include 'hammock-sync-datastore-javase'

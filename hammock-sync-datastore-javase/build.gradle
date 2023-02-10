@@ -1,0 +1,50 @@
+apply plugin: 'java'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+java {
+    toolchain {
+        sourceCompatibility = JavaLanguageVersion.of(8)
+        targetCompatibility = JavaLanguageVersion.of(8)
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':hammock-sync-datastore-core')
+
+    implementation group: 'com.almworks.sqlite4java', name: 'sqlite4java', version: '1.0.392'
+
+    // there are a couple of unit tests in this project
+    testImplementation group: 'org.hamcrest', name: 'hamcrest-all', version:'1.3'
+    testImplementation group: 'junit', name: 'junit', version:'4.13.2'
+    testImplementation group: 'org.mockito', name: 'mockito-all', version:'1.10.19'
+    testImplementation 'commons-validator:commons-validator:1.7'
+    // and we depend on some test utilities over in core
+    testImplementation project(':hammock-sync-datastore-core').sourceSets.test.output
+}
+
+tasks.withType(Test) {
+    // the native dir is one directory up from the core project dir
+    systemProperty "sqlite4java.library.path", "../native"
+}
+
+task listJars doLast() {
+    configurations.testCompile.each { File file -> println file.name }
+}
+
+tasks.withType(Test) {
+    testLogging {
+        // Get full exception info for test failures
+        exceptionFormat = 'full'
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+    }
+}
