@@ -1,8 +1,7 @@
-name: Hammock Sync CI - Build
+name: Hammock Sync CI - Build - Single Test
 
-on:
-  pull_request:
-    branches: [ main ]
+on: push
+
 env: 
   COUCHDB_USER: "admin"
   COUCHDB_PASSWORD: "password"
@@ -14,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        couchdb: [3.3.1, 2.3.1, 1.7.2]
+        couchdb: [3.3.1]
       fail-fast: true
       max-parallel: 1
     steps:
