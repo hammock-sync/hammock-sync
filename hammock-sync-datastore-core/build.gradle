@@ -35,9 +35,28 @@ dependencies {
 
 }
 
+task copyFixtures(type: Copy) {
+    from '../fixture'
+    into 'fixture'
+}
+
 tasks.withType(Test) {
+    // pick up properties named test.* from command line, gradle.properties first
+    System.properties.each { prop ->
+        if (prop.key.startsWith("test")) {
+            systemProperty prop.key, prop.value
+        }
+    }
     // the native dir is one directory up from the core project dir
     systemProperty "sqlite4java.library.path", "../native"
+    systemProperty "file.encoding", "UTF-8"
+
+    /*
+    doFirst {
+        // we need to copy fixtures to this sub-project
+        copyFixtures.execute();
+    }
+     */
 }
 
 task listJars doLast() {
@@ -53,6 +72,8 @@ tasks.withType(Test) {
         showStackTraces = true
     }
 }
+
+
 
 test {
     useJUnit {
