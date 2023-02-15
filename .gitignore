@@ -2,6 +2,8 @@
 .gradle
 
 **/build
+**/fixture
+
 
 local.properties
 

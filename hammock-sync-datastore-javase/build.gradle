@@ -27,12 +27,22 @@ dependencies {
     testImplementation group: 'org.mockito', name: 'mockito-all', version:'1.10.19'
     testImplementation 'commons-validator:commons-validator:1.7'
     // and we depend on some test utilities over in core
+
     testImplementation project(':hammock-sync-datastore-core').sourceSets.test.output
 }
 
+task copyFixtures(type: Copy) {
+    from '../fixture'
+    into 'fixture'
+}
+
 tasks.withType(Test) {
+    dependsOn copyFixtures
+    testClassesDirs += project(':hammock-sync-datastore-core').sourceSets.test.output
     // the native dir is one directory up from the core project dir
     systemProperty "sqlite4java.library.path", "../native"
+    systemProperty "file.encoding", "UTF-8"
+
 }
 
 task listJars doLast() {

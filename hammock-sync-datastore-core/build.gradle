@@ -41,6 +41,7 @@ task copyFixtures(type: Copy) {
 }
 
 tasks.withType(Test) {
+    dependsOn copyFixtures
     // pick up properties named test.* from command line, gradle.properties first
     System.properties.each { prop ->
         if (prop.key.startsWith("test")) {
@@ -51,12 +52,6 @@ tasks.withType(Test) {
     systemProperty "sqlite4java.library.path", "../native"
     systemProperty "file.encoding", "UTF-8"
 
-    /*
-    doFirst {
-        // we need to copy fixtures to this sub-project
-        copyFixtures.execute();
-    }
-     */
 }
 
 task listJars doLast() {
