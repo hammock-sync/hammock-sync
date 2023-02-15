@@ -19,6 +19,7 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
+import org.hammock.common.RequireRunningCouchDB;
 import org.hammock.sync.documentstore.DocumentRevision;
 import org.hammock.sync.internal.documentstore.DocumentRevisionTree;
 import org.hammock.sync.internal.mazha.ChangesResult;
@@ -27,11 +28,12 @@ import org.hammock.sync.internal.mazha.CouchClient;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-
+@Category(RequireRunningCouchDB.class)
 public class MissingRevsReplicationTest extends ReplicationTestBase {
 
     private CouchClient clientMock;

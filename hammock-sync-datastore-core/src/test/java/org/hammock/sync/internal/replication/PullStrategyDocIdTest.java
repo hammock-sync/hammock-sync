@@ -14,15 +14,18 @@
 
 package org.hammock.sync.internal.replication;
 
+import org.hammock.common.RequireRunningCouchDB;
 import org.hammock.sync.internal.mazha.AnimalDb;
 import org.hammock.sync.internal.mazha.ClientTestUtils;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.Arrays;
 import java.util.List;
 
+@Category(RequireRunningCouchDB.class)
 public class PullStrategyDocIdTest extends ReplicationTestBase {
 
     // we use this utility method rather than ReplicationTestBase.pull() because some

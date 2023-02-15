@@ -68,14 +68,10 @@ tasks.withType(Test) {
     }
 }
 
-
-
 test {
     useJUnit {
         excludeCategories \
-        'org.hammock.common.SystemTest', \
         'org.hammock.common.RequireRunningCouchDB', \
-        'org.hammock.common.PerformanceTest', \
         'org.hammock.common.RequireRunningProxy'
     }
 }
@@ -83,23 +79,6 @@ test {
 task integrationTest(type: Test, dependsOn: testClasses) {
     useJUnit {
         excludeCategories \
-        'org.hammock.common.SystemTest', \
-        'org.hammock.common.PerformanceTest', \
-        'org.hammock.common.RequireRunningProxy'
-    }
-}
-
-task performanceTest(type: Test, dependsOn: testClasses) {
-    useJUnit {
-        includeCategories
-        'org.hammock.common.PerformanceTest'
-    }
-}
-
-task systemTest(type: Test, dependsOn: testClasses) {
-    // Run all tests except unreliable network test (which requires a proxy)
-    useJUnit {
-        excludeCategories
         'org.hammock.common.RequireRunningProxy'
     }
 }

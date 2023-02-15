@@ -50,9 +50,7 @@ public class TestUtils {
     public static SQLDatabase createEmptyDatabase(String database_dir, String database_file) throws IOException, SQLException {
         File dbFile = new File(database_dir + File.separator + database_file + DATABASE_FILE_EXT);
         FileUtils.touch(dbFile);
-        SQLDatabase database = SQLDatabaseFactory.openSQLDatabase(dbFile,
-                new NullKeyProvider());
-        return database;
+        return SQLDatabaseFactory.openSQLDatabase(dbFile, new NullKeyProvider());
     }
 
     public static void deleteDatabaseQuietly(SQLDatabase database) {
@@ -64,6 +62,7 @@ public class TestUtils {
                 FileUtils.deleteQuietly(new File(database.filename));
             }
         } catch (Exception e) {
+            // Ignore
         }
     }
 
@@ -78,7 +77,7 @@ public class TestUtils {
         String tempPath = String.format(
                 "%s_%s",
                 dirPrefix,
-                UUID.randomUUID().toString()
+                UUID.randomUUID()
         );
         File f = new File(
                 FileUtils.getTempDirectory().getAbsolutePath(),
@@ -137,22 +136,12 @@ public class TestUtils {
            //yay more reflection goes here
 
            try {
-               Class env = Class.forName("android.os.Environment");
+               Class<?> env = Class.forName("android.os.Environment");
                Method externalStorageMethod = env.getMethod("getExternalStorageDirectory");
 
                File sdcard = (File) externalStorageMethod.invoke(null);
                return new File(sdcard, fileName);
-           } catch (ClassNotFoundException e){
-               //couldn't find the needed classed
-               e.printStackTrace();
-               return null;
-           } catch (NoSuchMethodException e){
-               e.printStackTrace();
-               return null;
-           } catch (IllegalAccessException e){
-               e.printStackTrace();
-               return null;
-           } catch (InvocationTargetException e){
+           } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException  e ){
                e.printStackTrace();
                return null;
            }

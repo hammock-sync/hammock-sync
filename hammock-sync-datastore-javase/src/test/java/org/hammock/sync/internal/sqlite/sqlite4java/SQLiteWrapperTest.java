@@ -18,13 +18,13 @@ package org.hammock.sync.internal.sqlite.sqlite4java;
 
 import com.almworks.sqlite4java.SQLiteConnection;
 import com.almworks.sqlite4java.SQLiteException;
+
 import org.hammock.sync.internal.android.ContentValues;
 import org.hammock.sync.internal.sqlite.Cursor;
 import org.hammock.sync.internal.sqlite.SQLDatabase;
 import org.hammock.sync.internal.util.Misc;
 import org.hammock.sync.util.SQLDatabaseTestUtils;
 import org.hammock.sync.util.TestUtils;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
