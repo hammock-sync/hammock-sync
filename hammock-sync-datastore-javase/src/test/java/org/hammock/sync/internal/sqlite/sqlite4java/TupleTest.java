@@ -14,7 +14,7 @@
  * and limitations under the License.
  */
 
-package org.hammock.sync.sqlite.sqlite4java;
+package org.hammock.sync.internal.sqlite.sqlite4java;
 
 import org.hammock.sync.internal.sqlite.Cursor;
 import org.hammock.sync.internal.sqlite.sqlite4java.Tuple;
