@@ -17,8 +17,6 @@
 package org.hammock.sync.internal.sqlite.sqlite4java;
 
 import org.hammock.sync.internal.sqlite.Cursor;
-import org.hammock.sync.internal.sqlite.sqlite4java.SQLiteCursor;
-import org.hammock.sync.internal.sqlite.sqlite4java.Tuple;
 
 import org.junit.Assert;
 import org.junit.Before;

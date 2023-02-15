@@ -20,6 +20,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.hammock.common.RequireRunningCouchDB;
 import org.hammock.sync.event.EventBus;
 import org.hammock.sync.event.notifications.ReplicationCompleted;
 import org.hammock.sync.event.notifications.ReplicationErrored;
@@ -29,9 +30,11 @@ import org.hammock.sync.replication.Replicator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.net.URI;
 
+@Category(RequireRunningCouchDB.class)
 public class ReplicationPolicyManagerTest extends ReplicationTestBase {
 
     URI source;

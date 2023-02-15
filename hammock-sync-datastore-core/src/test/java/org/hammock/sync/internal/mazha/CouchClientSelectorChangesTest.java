@@ -16,10 +16,13 @@ package org.hammock.sync.internal.mazha;
 
 import static org.hamcrest.Matchers.hasSize;
 
+import org.hammock.common.RequireRunningCouchDB;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
+@Category(RequireRunningCouchDB.class)
 public class CouchClientSelectorChangesTest extends CouchClientTestBase {
 
     @Before
