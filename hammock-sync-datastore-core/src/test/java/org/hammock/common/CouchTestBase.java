@@ -29,7 +29,7 @@ import java.net.URISyntaxException;
  */
 public abstract class CouchTestBase {
 
-
+/*
     static {
         try {
 
@@ -38,7 +38,7 @@ public abstract class CouchTestBase {
             //  reflection and convert the 2D array into System properties to be used by the tests.
 
             if (Misc.isRunningOnAndroid()) {
-                Class klass = Class.forName("cloudant.com.androidtest.test.BuildConfig");
+                Class klass = Class.forName("org.hammock.sync.test.BuildConfig");
                 Field testConfig = klass.getField("TEST_CONFIG");
                 String[][] testConfigHash  = (String[][])testConfig.get(null);
                 for(String[] configPair : testConfigHash){
@@ -50,7 +50,7 @@ public abstract class CouchTestBase {
             throw new RuntimeException(e);
         }
     }
-
+*/
 
 
     public CouchConfig getCouchConfig(String db) {
@@ -66,7 +66,8 @@ public abstract class CouchTestBase {
              // If we're running on the Android emulator, 127.0.0.1 is the emulated device, rather
              // than the host machine. Instead we connect to 10.0.2.2.
             if(Misc.isRunningOnAndroid()){
-                host = "10.0.2.2";
+               // host = "10.0.2.2";
+                host = "admin:password@192.168.1.34";
             } else {
                 host = "127.0.0.1";
             }

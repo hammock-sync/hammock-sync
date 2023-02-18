@@ -24,7 +24,7 @@ A list of known findbugs issues that we cannot fix at this time.
     </Match>
     <Match>
         <Bug code="RV" pattern="RV_NEGATING_RESULT_OF_COMPARETO" />
-        <Class name="com.cloudant.sync.datastore.BasicDatastore$15" />
+        <Class name="com.hammock.sync.datastore.BasicDatastore$15" />
     </Match>
     <Match>
         <Bug code="FE" pattern="FE_FLOATING_POINT_EQUALITY" />
@@ -53,7 +53,7 @@ A list of known findbugs issues that we cannot fix at this time.
 
     <Match>
         <Bug code="REC" pattern="REC_CATCH_EXCEPTION" />
-        <Class name="com.cloudant.sync.internal.datastore.callables.ForceInsertCallable" />
+        <Class name="com.hammock.sync.internal.datastore.callables.ForceInsertCallable" />
         <Method name="call" />
     </Match>
 

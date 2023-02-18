@@ -192,7 +192,7 @@ public class DocumentStore {
      * WARNING: accessing APIs exposed on the
      * {@link org.hammock.sync.documentstore.advanced.Database} class returned by this method is
      * not required for typical use cases. Refer to the javadoc in the
-     * {@link com.cloudant.sync.documentstore.advanced} package before using this.
+     * {@link com.hammock.sync.documentstore.advanced} package before using this.
      *
      * @return interface to advanced database methods
      */

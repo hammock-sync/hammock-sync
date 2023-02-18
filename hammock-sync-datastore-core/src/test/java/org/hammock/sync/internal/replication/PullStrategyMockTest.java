@@ -17,7 +17,7 @@
 package org.hammock.sync.internal.replication;
 
 import static org.junit.Assume.assumeNoException;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.anyString;

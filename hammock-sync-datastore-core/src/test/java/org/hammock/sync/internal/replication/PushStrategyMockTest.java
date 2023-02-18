@@ -118,7 +118,7 @@ public class PushStrategyMockTest extends ReplicationTestBase {
         // Verify
         verify(mockRemoteDb).bulkCreateSerializedDocs(argThat(new ArgumentMatcher<List>() {
             @Override
-            public boolean matches(Object argument) {
+            public boolean matches(List argument) {
                 Assert.assertTrue(argument instanceof List);
                 Assert.assertEquals(0, ((List) argument).size());
                 return true;
