@@ -16,6 +16,7 @@
 
 package org.hammock.sync.util;
 
+import org.apache.commons.io.IOUtils;
 import org.hammock.sync.documentstore.DocumentBody;
 import org.hammock.sync.documentstore.DocumentBodyFactory;
 import org.hammock.sync.documentstore.encryption.NullKeyProvider;
@@ -26,7 +27,9 @@ import org.hammock.sync.internal.sqlite.SQLDatabaseFactory;
 import org.hammock.sync.internal.sqlite.SQLDatabaseQueue;
 
 import org.apache.commons.io.FileUtils;
+import org.mockito.internal.util.io.IOUtil;
 
+import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -136,12 +139,27 @@ public class TestUtils {
            //yay more reflection goes here
 
            try {
+               InputStream is = TestUtils.class.getClassLoader().getResourceAsStream(fileName);
+               File tmp = File.createTempFile("fixture",fileName.replace("/","-"));
+               if (is != null) {
+                   try (FileOutputStream out = new FileOutputStream(tmp)){
+                       IOUtils.copy(is, out);
+                   }
+               } else {
+                  String path = tmp.getAbsolutePath();
+                  return new File(path+"2");
+               }
+            /*
                Class<?> env = Class.forName("android.os.Environment");
                Method externalStorageMethod = env.getMethod("getExternalStorageDirectory");
 
                File sdcard = (File) externalStorageMethod.invoke(null);
                return new File(sdcard, fileName);
-           } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException  e ){
+            */
+               return tmp;
+             } catch (Exception e) {
+
+           //} catch (IOException | ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException  e ){
                e.printStackTrace();
                return null;
            }

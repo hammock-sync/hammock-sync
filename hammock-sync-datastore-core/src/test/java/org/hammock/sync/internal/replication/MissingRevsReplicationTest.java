@@ -15,7 +15,7 @@
 package org.hammock.sync.internal.replication;
 
 
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
@@ -29,7 +29,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -75,7 +75,7 @@ public class MissingRevsReplicationTest extends ReplicationTestBase {
                 return changesResult;
 
             }
-        }).when(clientMock).changes(Matchers.anyObject(), anyInt());
+        }).when(clientMock).changes(ArgumentMatchers.any(), anyInt());
 
         // Do the pull replication
         pull();

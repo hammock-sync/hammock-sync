@@ -134,7 +134,7 @@ public class AttachmentStreamFactoryTest extends BasicDatastoreTestBase {
         AttachmentStreamFactory asf = new AttachmentStreamFactory(new NullKeyProvider());
 
         File plainText = f("fixture/EncryptedAttachmentTest_plainText");
-        File zippedPlainText = f("fixture/EncryptedAttachmentTest_plainText.gz");
+        File zippedPlainText = f("fixture/EncryptedAttachmentTest_plainText2.gz");
 
         File actualOutput = new File(datastore_manager_dir, "temp" + UUID.randomUUID());
         OutputStream out = asf.getOutputStream(actualOutput, Attachment.Encoding.Gzip);
@@ -160,7 +160,7 @@ public class AttachmentStreamFactoryTest extends BasicDatastoreTestBase {
         AttachmentStreamFactory asf = new AttachmentStreamFactory(new NullKeyProvider());
 
         File plainText = f("fixture/EncryptedAttachmentTest_plainText");
-        File zippedPlainText = f("fixture/EncryptedAttachmentTest_plainText.gz");
+        File zippedPlainText = f("fixture/EncryptedAttachmentTest_plainText2.gz");
 
         SavedAttachment savedAttachment = new SavedAttachment(0, "test", null, "text/plain", Attachment.Encoding.Gzip, 0, 0, 0,
                 zippedPlainText, asf);
