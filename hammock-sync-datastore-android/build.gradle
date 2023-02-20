@@ -31,9 +31,6 @@ android {
             }
         }
         androidTest {
-            resources {
-                srcDirs "src/androidTest/assets"
-            }
             java {
                 srcDirs = [/*"/src/androidTest/java" ,*/
                            "../hammock-sync-datastore-core/src/test/java"
@@ -76,7 +73,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation "androidx.test:runner:1.5.2"
     androidTestImplementation 'org.mockito:mockito-android:5.1.1'
-   // androidTestImplementation 'com.google.android:android-test:4.1.1.4'
 
 }
 
@@ -85,21 +81,11 @@ repositories {
     mavenCentral()
 }
 
-task uploadFixtures(type:Exec) {
-    // need to upload the fixtures to the device/emulator external storage
-    commandLine "${android.getSdkDirectory().getAbsolutePath()}/platform-tools/adb","push", "-p", "../fixture/.", "/sdcard/fixture/"
-}
-
 task copyFixtures(type: Copy) {
     from '../fixture'
-    into 'src/androidTest/assets/fixture'
+    into 'src/androidTest/resources/fixture'
 }
-/*
-tasks.whenTaskAdded { task ->
-    if (task.name == 'generateDebugAssets')
-        task.dependsOn('copyFixtures')
-}
-*/
+preBuild.dependsOn copyFixtures
 
 def convertTestSysPropsToHash (){
     return "{" +
