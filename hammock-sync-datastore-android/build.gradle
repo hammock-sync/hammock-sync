@@ -2,6 +2,8 @@ plugins {
     id 'com.android.library'
 }
 
+def testConfig = convertTestSysPropsToHash()
+
 android {
     namespace 'org.hammock.sync'
     compileSdk 33
@@ -11,6 +13,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String[][]", "TEST_CONFIG", testConfig
     }
 
     sourceSets {
@@ -97,3 +100,12 @@ tasks.whenTaskAdded { task ->
         task.dependsOn('copyFixtures')
 }
 */
+
+def convertTestSysPropsToHash (){
+    return "{" +
+            System.properties
+                    .grep { prop -> prop.key.startsWith("test") }
+                    .collect(new ArrayList()) { prop -> "{\""+prop.key+"\",\""+ prop.value+"\"}"}
+                    .join(",") +
+            "}"
+}
