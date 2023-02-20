@@ -16,27 +16,24 @@
 
 package org.hammock.sync.util;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.hammock.sync.documentstore.DocumentBody;
 import org.hammock.sync.documentstore.DocumentBodyFactory;
 import org.hammock.sync.documentstore.encryption.NullKeyProvider;
-import org.hammock.sync.internal.util.Misc;
 import org.hammock.sync.internal.query.QueryImpl;
 import org.hammock.sync.internal.sqlite.SQLDatabase;
 import org.hammock.sync.internal.sqlite.SQLDatabaseFactory;
 import org.hammock.sync.internal.sqlite.SQLDatabaseQueue;
+import org.hammock.sync.internal.util.Misc;
 
-import org.apache.commons.io.FileUtils;
-import org.mockito.internal.util.io.IOUtil;
-
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -134,41 +131,74 @@ public class TestUtils {
      * @param fileName the name of a fixture to read
      * @return {@link java.io.File} object An file object representing a fixture on disk
      */
-   public static File loadFixture(String fileName){
-       if(Misc.isRunningOnAndroid()){
-           //yay more reflection goes here
+    public static File loadFixture(String fileName){
+        if(Misc.isRunningOnAndroid()){
+            try {
 
-           try {
-               InputStream is = TestUtils.class.getClassLoader().getResourceAsStream(fileName);
-               File tmp = File.createTempFile("fixture",fileName.replace("/","-"));
-               if (is != null) {
-                   try (FileOutputStream out = new FileOutputStream(tmp)){
-                       IOUtils.copy(is, out);
-                   }
-               } else {
-                  String path = tmp.getAbsolutePath();
-                  return new File(path+"2");
-               }
-            /*
-               Class<?> env = Class.forName("android.os.Environment");
-               Method externalStorageMethod = env.getMethod("getExternalStorageDirectory");
+                //File cacheDir = InstrumentationRegistry.getInstrumentation().getTargetContext().getCacheDir();
+                Class registry = Class.forName("androidx.test.platform.app.InstrumentationRegistry");
+                Method getInstrumentation = registry.getMethod("getInstrumentation");
 
-               File sdcard = (File) externalStorageMethod.invoke(null);
-               return new File(sdcard, fileName);
-            */
-               return tmp;
-             } catch (Exception e) {
+                Class instrumentation = Class.forName("android.app.Instrumentation");
+                Method getTargetContext = instrumentation.getMethod("getTargetContext");
 
-           //} catch (IOException | ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException  e ){
-               e.printStackTrace();
-               return null;
-           }
+                Class context = Class.forName("android.content.Context");
+                Method getCacheDir = context.getMethod("getCacheDir");
 
-       }else {
-           //just return the new File object
-           return new File(fileName);
+                Object inst = getInstrumentation.invoke(null);
+                Object ctx = getTargetContext.invoke(inst);
+                Object dir = getCacheDir.invoke(ctx);
 
-       }
-   }
+
+                File cacheDir = ((File)dir);
+                ClassLoader classLoader = TestUtils.class.getClassLoader();
+                InputStream in = classLoader.getResourceAsStream(fileName);
+                if(in != null) {
+                    return createFileFromInputStream(in, cacheDir, fileName);
+                } else {
+                    return new File(fileName);
+                }
+            } catch (IOException ioe){
+                ioe.printStackTrace();
+                return null;
+            } catch (ClassNotFoundException cnfe){
+                cnfe.printStackTrace();
+                return null;
+            } catch(NoSuchMethodException nsme){
+                nsme.printStackTrace();
+                return null;
+            } catch (IllegalAccessException iae){
+                iae.printStackTrace();
+                return null;
+            } catch (InvocationTargetException ite){
+                ite.printStackTrace();
+                return null;
+            }
+
+        }else {
+            //just return the new File object
+            return new File(fileName);
+
+        }
+    }
+
+    private static File createFileFromInputStream(InputStream inputStream, File path, String fileName) throws IOException{
+        File f = new File(path,fileName);
+        if(f.getParentFile()!=null && !f.getParentFile().exists()){
+            f.getParentFile().mkdirs();
+        }
+        OutputStream outputStream = new FileOutputStream(f);
+        byte buffer[] = new byte[1024];
+        int length = 0;
+
+        while((length=inputStream.read(buffer)) > 0) {
+            outputStream.write(buffer,0,length);
+        }
+
+        outputStream.close();
+        inputStream.close();
+
+        return f;
+    }
 
 }
