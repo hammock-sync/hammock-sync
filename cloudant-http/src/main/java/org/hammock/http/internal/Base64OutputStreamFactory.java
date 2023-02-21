@@ -33,14 +33,14 @@ public class Base64OutputStreamFactory {
     public static OutputStream get(OutputStream os) {
         try {
             if (runningOnAndroid) {
-                Class c = Class.forName("android.util.Base64OutputStream");
-                Constructor ctor = c.getDeclaredConstructor(OutputStream.class, int.class);
+                Class<?> c = Class.forName("android.util.Base64OutputStream");
+                Constructor<?> ctor = c.getDeclaredConstructor(OutputStream.class, int.class);
                 // 2 = android.util.BASE64.NO_WRAP http://developer.android
                 // .com/reference/android/util/Base64.html#NO_WRAP
                 return (OutputStream) ctor.newInstance(os, 2);
             } else {
-                Class c = Class.forName("org.apache.commons.codec.binary.Base64OutputStream");
-                Constructor ctor = c.getDeclaredConstructor(OutputStream.class, boolean.class,
+                Class<?> c = Class.forName("org.apache.commons.codec.binary.Base64OutputStream");
+                Constructor<?> ctor = c.getDeclaredConstructor(OutputStream.class, boolean.class,
                         int.class, byte[].class);
                 return (OutputStream) ctor.newInstance(os, true, 0, null);
             }
