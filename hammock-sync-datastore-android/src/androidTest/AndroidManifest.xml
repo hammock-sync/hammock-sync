@@ -1,22 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="org.hammock.sync"
-    >
-    <instrumentation
-    android:name="androidx.test.runner.AndroidJUnitRunner"
-    android:targetPackage="org.hammock.sync.test"/>
-
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
         android:allowBackup="true"
         android:label="Hammock Sync Android Test"
-        android:usesCleartextTraffic="true"
-        >
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            tools:node="remove"
-            />
+        android:usesCleartextTraffic="true">
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

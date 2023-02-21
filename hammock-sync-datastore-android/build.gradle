@@ -27,7 +27,7 @@ android {
         }
         androidTest {
             java {
-                srcDirs = [/*"/src/androidTest/java" ,*/
+                srcDirs = ["/src/androidTest/java" ,
                            "../hammock-sync-datastore-core/src/test/java"
                 ]
                 // we would exclude these via categories but it doesn't like the android runner respects them
@@ -52,8 +52,8 @@ configurations.all {
 
 dependencies {
     implementation project(':hammock-sync-datastore-core')
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.legacy:legacy-support-core-utils:1.0.0'
+    //implementation 'androidx.appcompat:appcompat:1.6.1'
+    //implementation 'androidx.legacy:legacy-support-core-utils:1.0.0'
     //compileOnly(group: 'com.squareup.okhttp3', name: 'okhttp-urlconnection', version: '3.13.1')
 
     implementation project(':cloudant-http')
@@ -82,7 +82,7 @@ task copyFixtures(type: Copy) {
 }
 preBuild.dependsOn copyFixtures
 
-def convertTestSysPropsToHash (){
+static def convertTestSysPropsToHash (){
     return "{" +
             System.properties
                     .grep { prop -> prop.key.startsWith("test") }
