@@ -18,16 +18,11 @@ android {
 
     sourceSets {
         main {
-            java.srcDirs = [
-                           /* "../cloudant-http/src/main/java",
-                            "../hammock-sync-datastore-core/src/main/java",*/
-                            "src/main/java"
-                            ]
-            assets {
-                srcDirs "src/main/assets"
+            java {
+                srcDirs "src/main/java"
             }
             res {
-                srcDirs 'src\\main\\res', 'src\\androidTest\\res'
+                srcDirs "src/main/res"
             }
         }
         androidTest {
