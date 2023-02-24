@@ -20,14 +20,12 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.startsWith;
 
+import org.hamcrest.MatcherAssert;
 import org.hammock.common.CollectionFactory;
-import org.hammock.sync.internal.common.CouchConstants;
 import org.hammock.common.RequireRunningCouchDB;
-
+import org.hammock.sync.internal.common.CouchConstants;
 import org.hammock.sync.internal.util.Misc;
-
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -133,7 +131,7 @@ public class CouchClientBasicTest extends CouchClientTestBase {
         Response res = client.create(doc);
         Assert.assertNotNull(res);
         Assert.assertTrue(id.equals(res.getId()));
-        Assert.assertThat(res.getRev(), startsWith("1-"));
+        MatcherAssert.assertThat(res.getRev(), startsWith("1-"));
 
         Map<String, Object> doc2 = client.getDocument(id);
         Assert.assertEquals(id, doc2.get("_id"));
@@ -206,12 +204,12 @@ public class CouchClientBasicTest extends CouchClientTestBase {
     @Test
     public void getDocument_idRevForFoo_success() {
         Response res = client.create(new Foo("Tom"));
-        Assert.assertThat(res.getRev(), startsWith("1-"));
+        MatcherAssert.assertThat(res.getRev(), startsWith("1-"));
 
         Foo foo = client.getDocument(res.getId(), Foo.class);
         foo.setName("Jerry");
         Response res2 = client.create(foo);
-        Assert.assertThat(res2.getRev(), startsWith("2-"));
+        MatcherAssert.assertThat(res2.getRev(), startsWith("2-"));
 
         {
             Foo fooVersion2 = client.getDocument(res2.getId(), Foo.class);
@@ -223,7 +221,7 @@ public class CouchClientBasicTest extends CouchClientTestBase {
         {
             Foo fooVersion1 = client.getDocument(res.getId(), res.getRev(), Foo.class);
             Assert.assertNotNull(fooVersion1);
-            Assert.assertThat(fooVersion1.getRevision(), startsWith("1-"));
+            MatcherAssert.assertThat(fooVersion1.getRevision(), startsWith("1-"));
         }
     }
 
@@ -267,7 +265,7 @@ public class CouchClientBasicTest extends CouchClientTestBase {
 
         Response updateRes = client.update(res.getId(), foo1);
         Assert.assertEquals(res.getId(), updateRes.getId());
-        Assert.assertThat(updateRes.getRev(), startsWith("2-"));
+        MatcherAssert.assertThat(updateRes.getRev(), startsWith("2-"));
 
         Foo foo2 = client.getDocument(res.getId(), Foo.class);
         Assert.assertEquals("Jerry", foo2.getName());
@@ -288,7 +286,7 @@ public class CouchClientBasicTest extends CouchClientTestBase {
         doc.put(CouchConstants._id, "some_id_not_exist");
         Response res2 = client.update(res.getId(), doc);
         Map<String, Object> updatedDoc = client.getDocument(res2.getId());
-        Assert.assertThat((String) updatedDoc.get(CouchConstants._rev), startsWith("2-"));
+        MatcherAssert.assertThat((String) updatedDoc.get(CouchConstants._rev), startsWith("2-"));
     }
 
     @Test(expected = DocumentConflictException.class)
@@ -337,9 +335,10 @@ public class CouchClientBasicTest extends CouchClientTestBase {
     }
 
     @Test
-    @Ignore
+    // @Ignore
     // Currently this test fails on Cloudant. The behaviour is likely to change in future, at which
     // point the test can be re-instated.
+    // Hammock is not tested on Cloudant so Hammock re-instatiates this test
     public void revsDiff_emptyInput_returnNothing() {
         Map<String, CouchClient.MissingRevisions> diffs = client.revsDiff(new HashMap<String, Set<String>>());
         Assert.assertEquals(0, diffs.size());
@@ -356,7 +355,7 @@ public class CouchClientBasicTest extends CouchClientTestBase {
 
         Assert.assertEquals(1, diffs.size());
         Assert.assertEquals(10000, diffs.get("A").missing.size());
-        Assert.assertThat(diffs.get("A").missing, hasItems("0-a", "9999-a"));
+        MatcherAssert.assertThat(diffs.get("A").missing, hasItems("0-a", "9999-a"));
     }
 
     @Test
@@ -367,13 +366,13 @@ public class CouchClientBasicTest extends CouchClientTestBase {
 
         Map<String, CouchClient.MissingRevisions> diffs = client.revsDiff(revs);
         Assert.assertEquals(2, diffs.size());
-        Assert.assertThat(diffs.keySet(), hasItems("A", "B"));
+        MatcherAssert.assertThat(diffs.keySet(), hasItems("A", "B"));
 
         Assert.assertEquals(2, diffs.get("A").missing.size());
         Assert.assertEquals(2, diffs.get("B").missing.size());
 
-        Assert.assertThat(diffs.get("A").missing, hasItems("1-a", "2-b"));
-        Assert.assertThat(diffs.get("B").missing, hasItems("1-c", "2-d"));
+        MatcherAssert.assertThat(diffs.get("A").missing, hasItems("1-a", "2-b"));
+        MatcherAssert.assertThat(diffs.get("B").missing, hasItems("1-c", "2-d"));
     }
 
     @Test
@@ -397,7 +396,7 @@ public class CouchClientBasicTest extends CouchClientTestBase {
         Map<String, CouchClient.MissingRevisions> diffs = client.revsDiff(revs);
         Assert.assertEquals(1, diffs.size());
         Assert.assertEquals(1, diffs.get(res.getId()).missing.size());
-        Assert.assertThat(diffs.get(res.getId()).missing, hasItem("2-a"));
+        MatcherAssert.assertThat(diffs.get(res.getId()).missing, hasItem("2-a"));
     }
 
     private boolean isDbExist(String dbName) {
