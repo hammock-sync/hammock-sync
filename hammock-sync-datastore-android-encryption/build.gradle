@@ -1,0 +1,93 @@
+plugins {
+    id 'com.android.library'
+}
+def testConfig = convertTestSysPropsToHash()
+
+android {
+    namespace 'org.hammock.sync.encrypt'
+    testNamespace 'org.hammock.sync.test'
+    compileSdk 33
+    defaultConfig {
+        minSdk 29
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String[][]", "TEST_CONFIG", testConfig
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDirs "src/main/java"
+            }
+            res {
+                srcDirs "src/main/res"
+            }
+        }
+        androidTest {
+            java {
+                srcDirs = ["/src/androidTest/java" /*,
+                           "../hammock-sync-datastore-core/src/test/java"*/
+                ]
+                // we would exclude these via categories but it doesn't like the android runner respects them
+                exclude '**/Unreliable*Test*'
+                // some of these tests fail as follows:
+                // java.lang.OutOfMemoryError: Failed to allocate a
+                // 8204 byte allocation with 4194304 free bytes and
+                // 8MB until OOM; failed due to fragmentation
+                // (required continguous free 12288 bytes where
+                // largest contiguous free 8192 bytes)
+                //exclude '**/KeyManagerTests*'
+            }
+        }
+    }
+}
+
+configurations.all {
+    resolutionStrategy.dependencySubstitution {
+        substitute module('org.hamcrest:hamcrest-core:1.3') using module('junit:junit:4.13.2')
+    }
+}
+
+
+dependencies {
+    //implementation files('libs/sqlcipher.jar')
+    implementation "net.zetetic:android-database-sqlcipher:4.5.3"
+    implementation "androidx.sqlite:sqlite:2.3.0"
+    implementation project(':hammock-sync-datastore-android')
+    implementation project(':hammock-sync-datastore-core')
+    implementation project(':cloudant-http')
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.14.2'
+    implementation group: 'commons-codec', name: 'commons-codec', version:'1.15'
+    implementation group: 'commons-io', name: 'commons-io', version:'2.11.0'
+
+    // for unit tests
+    androidTestImplementation 'org.hamcrest:hamcrest-all:1.3'
+    androidTestImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation "androidx.test:runner:1.5.2"
+    androidTestImplementation 'org.mockito:mockito-core:5.1.1'
+    androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito-inline:2.28.1'
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+task copyFixtures(type: Copy) {
+    from '../fixture'
+    into 'src/androidTest/resources/fixture'
+}
+preBuild.dependsOn copyFixtures
+
+static def convertTestSysPropsToHash (){
+    return "{" +
+            System.properties
+                    .grep { prop -> prop.key.startsWith("test") }
+                    .collect(new ArrayList()) { prop -> "{\""+prop.key+"\",\""+ prop.value+"\"}"}
+                    .join(",") +
+            "}"
+}
+
