@@ -247,7 +247,7 @@ public class InternalDocumentRevision extends DocumentRevision implements
 
     @Override
     public int compareTo(InternalDocumentRevision o) {
-        return Long.valueOf(getSequence()).compareTo(o.getSequence());
+        return Long.compare(getSequence(), o.getSequence()); // Long.valueOf(getSequence()).compareTo(o.getSequence());
     }
 
 

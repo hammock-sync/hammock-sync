@@ -1,6 +1,6 @@
-plugins {
-    id 'com.android.library'
-}
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+
 def testConfig = convertTestSysPropsToHash()
 
 android {
@@ -52,12 +52,11 @@ configurations.all {
 
 
 dependencies {
-    //implementation files('libs/sqlcipher.jar')
     implementation "net.zetetic:android-database-sqlcipher:4.5.3"
     implementation "androidx.sqlite:sqlite:2.3.0"
     implementation project(':hammock-sync-datastore-android')
     implementation project(':hammock-sync-datastore-core')
-    implementation project(':cloudant-http')
+    implementation project(':hammock-http')
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.14.2'
     implementation group: 'commons-codec', name: 'commons-codec', version:'1.15'
     implementation group: 'commons-io', name: 'commons-io', version:'2.11.0'
@@ -91,3 +90,12 @@ static def convertTestSysPropsToHash (){
             "}"
 }
 
+publishing {
+    publications {
+        release(MavenPublication) {
+            afterEvaluate {
+                from components.release
+            }
+        }
+    }
+}

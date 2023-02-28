@@ -19,7 +19,7 @@ A list of known findbugs issues that we cannot fix at this time.
 
     <Match>
         <Bug code="RV" pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />
-        <Class name="AttachmentManager"/>
+        <Class name="~.*AttachmentManager"/>
         <Method name="addAttachment" />
     </Match>
     <Match>
@@ -28,26 +28,26 @@ A list of known findbugs issues that we cannot fix at this time.
     </Match>
     <Match>
         <Bug code="FE" pattern="FE_FLOATING_POINT_EQUALITY" />
-        <Class name="UnindexedMatcher"/>
+        <Class name="~.*UnindexedMatcher"/>
     </Match>
     <Match>
         <Bug code="NP" pattern="NP_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
-        <Class name="PushStrategy"/>
+        <Class name="~.*PushStrategy"/>
         <Method name="missingRevisionsToJsonDocs"/>
     </Match>
     <Match>
         <Bug code="REC" pattern="REC_CATCH_EXCEPTION" />
-        <Class name="CouchClient$ExecuteResult" />
+        <Class name="~.*CouchClient$ExecuteResult" />
         <Method name="ExecuteResult" />
     </Match>
     <Match>
         <Bug code="REC" pattern="REC_CATCH_EXCEPTION" />
-        <Class name="PullStrategy" />
+        <Class name="~.*PullStrategy" />
         <Method name="processOneChangesBatch" />
     </Match>
     <Match>
         <Bug code="REC" pattern="REC_CATCH_EXCEPTION" />
-        <Class name="JSONUtils" />
+        <Class name="~.*JSONUtils" />
         <Method name="isValidJSON" />
     </Match>
 
@@ -59,92 +59,91 @@ A list of known findbugs issues that we cannot fix at this time.
 
     <Match>
         <Bug code="REC" pattern="REC_CATCH_EXCEPTION" />
-        <Class name="CouchClient$ExecuteResult" />
+        <Class name="org.hammock.sync.internal.mazha.CouchClient$ExecuteResult" />
     </Match>
 
 
     <Match>
         <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
-        <Class name="LocalDocument" />
+        <Class name="~.*LocalDocument" />
         <Field name="docId" />
     </Match>
 
     <Match>
         <Bug code="REC" pattern="REC_CATCH_EXCEPTION" />
-        <Class name="JSONUtils" />
+        <Class name="~.*JSONUtils" />
         <Mehtod name="deserialize" />
     </Match>
 
     <Match>
         <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
-        <Class name="DocumentModified" />
+        <Class name="~.*DocumentModified" />
         <Field name="newDocument" />
     </Match>
 
     <Match>
         <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
-        <Class name="DocumentModified" />
+        <Class name="~.*DocumentModified" />
         <Field name="prevDocument" />
     </Match>
 
     <Match>
         <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
-        <Class name="DocumentStoreModified" />
+        <Class name="~.*DocumentStoreModified" />
         <Field name="dbName" />
     </Match>
 
     <Match>
         <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
-        <Class name="BulkGetRequest" />
+        <Class name="~.*BulkGetRequest" />
         <Field name="atts_since" />
     </Match>
 
     <Match>
         <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
-        <Class name="BulkGetRequest" />
+        <Class name="~.*BulkGetRequest" />
         <Field name="id" />
     </Match>
 
     <Match>
         <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
-        <Class name="BulkGetRequest" />
+        <Class name="~.*BulkGetRequest" />
         <Field name="rev" />
     </Match>
 
     <Match>
         <Bug code="UrF" pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
-        <Class name="ReplicationStrategyErrored" />
+        <Class name="~.*ReplicationStrategyErrored" />
         <Field name="replicationStrategy" />
     </Match>
 
     <Match>
         <Bug code="UwF" pattern="URF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD" />
-        <Class name="CouchClient$MissingRevisions" />
+        <Class name="org.hammock.sync.internal.mazha.CouchClient$MissingRevisions" />
         <Field name="missing" />
     </Match>
 
     <Match>
         <Bug code="UwF" pattern="URF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD" />
-        <Class name="CouchClient$MissingRevisions" />
+        <Class name="org.hammock.sync.internal.mazha.CouchClient$MissingRevisions" />
         <Field name="possible_ancestors" />
     </Match>
 
     <Match>
         <Bug code="RECR" pattern="REC_CATCH_EXCEPTION" />
-        <Class name="ForceInsertCallable"/>
+        <Class name="~.*ForceInsertCallable"/>
         <Method name="call"/>
     </Match>
 
     <Match>
         <Bug code="RCN" pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
-        <Class name="Misc"/>
+        <Class name="~.*Misc"/>
         <Method name="checkNotNullOrEmpty" />
     </Match>
 
     <Match>
         <Bug code="DB" pattern="DB_DUPLICATE_SWITCH_CLAUSES"/>
-        <Class name="CouchClient$ExecuteResult" />
-        <Method name="&lt;init&gt;"/>
+        <Class name="org.hammock.sync.internal.mazha.CouchClient$ExecuteResult" />
     </Match>
 
 </FindBugsFilter>
