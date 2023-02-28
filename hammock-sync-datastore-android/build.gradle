@@ -1,6 +1,5 @@
-plugins {
-    id 'com.android.library'
-}
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
 def testConfig = convertTestSysPropsToHash()
 
@@ -52,7 +51,7 @@ configurations.all {
 
 dependencies {
     implementation project(':hammock-sync-datastore-core')
-    implementation project(':cloudant-http')
+    implementation project(':hammock-http')
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.14.2'
     implementation group: 'commons-codec', name: 'commons-codec', version:'1.15'
     implementation group: 'commons-io', name: 'commons-io', version:'2.11.0'
@@ -84,4 +83,14 @@ static def convertTestSysPropsToHash (){
                     .collect(new ArrayList()) { prop -> "{\""+prop.key+"\",\""+ prop.value+"\"}"}
                     .join(",") +
             "}"
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            afterEvaluate {
+                from components.release
+            }
+        }
+    }
 }

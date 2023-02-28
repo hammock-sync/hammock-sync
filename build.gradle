@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application' version '7.4.1' apply false
     id 'com.android.library' version '7.4.1' apply false
+    id "com.github.spotbugs" version "5.0.13" apply false
 }
 
 repositories {
@@ -9,10 +10,10 @@ repositories {
 }
 
 allprojects {
-    group = 'org.hammock'
+    group = 'org.hammock.sync'
     version = new File(rootDir, 'VERSION').text.trim()
     description = """hammock-sync"""
     //if the version says "snapshot" anywhere assume it is not a release
-    //ext.isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
+    ext.isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
 }
 

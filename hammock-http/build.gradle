@@ -13,6 +13,7 @@
  */
 
 apply plugin: 'java'
+apply plugin: 'com.github.spotbugs'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
@@ -32,6 +33,7 @@ repositories {
 
 dependencies {
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+
     //needed to compile, but optional for consumers of java-cloudant
     compileOnly(group: 'com.squareup.okhttp3', name: 'okhttp-urlconnection', version: '3.13.1')
 }
@@ -41,8 +43,17 @@ javadoc {
     include("**/http/interceptors/*")
     exclude("**/http/Version.java")
 }
-/*
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}*/
+
+spotbugs {
+    toolVersion = "3.1.12"
+    // Report only high severity bugs for now
+    reportLevel = "low"
+    // The code base is pretty small so use max effort
+    effort = "max"
+    // We don't want to run findbugs on the test code yet
+ //   sourceSets = [sourceSets.main]
+    // Exclude a couple of known bugs until we get the chance to fix them
+    if (file("spotbugs_excludes.xml").exists()) {
+        excludeFilter = file("spotbugs_excludes.xml")
+    }
+}
