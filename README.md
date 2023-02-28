@@ -1,4 +1,4 @@
-# hammock-sync
+# hammock-sync (DRAFT - NO YET PUBLISHED)
 A CouchDB Sync Client for Android (in the future)
 
 STATUS: 
