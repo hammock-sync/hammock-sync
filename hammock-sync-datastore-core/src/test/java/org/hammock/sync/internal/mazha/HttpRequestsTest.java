@@ -19,8 +19,8 @@ package org.hammock.sync.internal.mazha;
 
 import org.hammock.common.RequireRunningCouchDB;
 import org.hammock.common.TestOptions;
-import org.hammock.http.HttpConnectionInterceptorContext;
-import org.hammock.http.HttpConnectionRequestInterceptor;
+import org.hammock.sync.http.HttpConnectionInterceptorContext;
+import org.hammock.sync.http.HttpConnectionRequestInterceptor;
 import org.hammock.sync.internal.util.Misc;
 
 import org.apache.commons.codec.binary.Base64;

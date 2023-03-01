@@ -21,12 +21,12 @@
 package org.hammock.sync.internal.mazha;
 
 
-import org.hammock.http.Http;
-import org.hammock.http.HttpConnection;
-import org.hammock.http.HttpConnectionRequestInterceptor;
-import org.hammock.http.HttpConnectionResponseInterceptor;
-import org.hammock.http.internal.interceptors.SSLCustomizerInterceptor;
-import org.hammock.http.internal.interceptors.UserAgentInterceptor;
+import org.hammock.sync.http.Http;
+import org.hammock.sync.http.HttpConnection;
+import org.hammock.sync.http.HttpConnectionRequestInterceptor;
+import org.hammock.sync.http.HttpConnectionResponseInterceptor;
+import org.hammock.sync.http.internal.interceptors.SSLCustomizerInterceptor;
+import org.hammock.sync.http.internal.interceptors.UserAgentInterceptor;
 import org.hammock.sync.internal.common.RetriableTask;
 import org.hammock.sync.internal.documentstore.DocumentRevsList;
 import org.hammock.sync.internal.documentstore.MultipartAttachmentWriter;

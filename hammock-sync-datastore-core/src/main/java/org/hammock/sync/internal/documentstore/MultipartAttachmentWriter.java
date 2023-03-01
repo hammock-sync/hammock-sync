@@ -14,7 +14,7 @@
 
 package org.hammock.sync.internal.documentstore;
 
-import org.hammock.http.HttpConnection;
+import org.hammock.sync.http.HttpConnection;
 import org.hammock.sync.documentstore.Attachment;
 import org.hammock.sync.internal.common.CouchConstants;
 import org.hammock.sync.internal.mazha.CouchClient;

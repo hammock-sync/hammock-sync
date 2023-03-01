@@ -21,10 +21,10 @@
 package org.hammock.sync.internal.mazha;
 
 import org.hammock.common.TestOptions;
-import org.hammock.http.HttpConnectionRequestInterceptor;
-import org.hammock.http.HttpConnectionResponseInterceptor;
-import org.hammock.http.internal.interceptors.CookieInterceptor;
-import org.hammock.http.internal.interceptors.IamCookieInterceptor;
+import org.hammock.sync.http.HttpConnectionRequestInterceptor;
+import org.hammock.sync.http.HttpConnectionResponseInterceptor;
+import org.hammock.sync.http.internal.interceptors.CookieInterceptor;
+import org.hammock.sync.http.internal.interceptors.IamCookieInterceptor;
 
 import java.net.URI;
 import java.net.URISyntaxException;

@@ -18,6 +18,42 @@ A list of known findbugs issues that we cannot fix at this time.
 <FindBugsFilter>
 
     <Match>
+        <Bug code="EI"/>
+    </Match>
+    <Match>
+        <Bug code="EI2"/>
+    </Match>
+    <Match>
+        <Bug code="DMI"/>
+        <Class name="org.hammock.sync.internal.documentstore.AttachmentStreamFactory"/>
+    </Match>
+    <Match>
+        <Bug code="MC"/>
+        <Class name="org.hammock.sync.internal.documentstore.DatabaseImpl"/>
+    </Match>
+    <Match>
+        <Bug code="MC"/>
+        <Class name="org.hammock.sync.internal.query.QueryImpl"/>
+    </Match>
+    <!-- Returning null instead of a zero length array has special meaning in this case.
+   Firstly, null indicates that no keys have been added to the query so we should not write a
+     parameter at all, whereas the empty array would otherwise get written to the request.
+   -->
+    <Match>
+        <Bug code="PZLA" pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+        <Class name="SSLCustomizerInterceptor$1"/>
+        <Method name="getAcceptedIssuers"/>
+    </Match>
+
+    <!-- We catch Exception where it isn't explicitly thrown. We should probably
+    catch a more specific type, but ignore it for now. -->
+    <Match>
+        <Bug code="REC" pattern="REC_CATCH_EXCEPTION"/>
+        <Class  name="~.*Base64OutputStreamFactory"/>
+        <Method name="get"/>
+    </Match>
+
+    <Match>
         <Bug code="RV" pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />
         <Class name="~.*AttachmentManager"/>
         <Method name="addAttachment" />

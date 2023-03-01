@@ -14,10 +14,10 @@
 
 package org.hammock.sync.replication;
 
-import org.hammock.http.HttpConnectionRequestInterceptor;
-import org.hammock.http.HttpConnectionResponseInterceptor;
-import org.hammock.http.internal.interceptors.CookieInterceptor;
-import org.hammock.http.internal.interceptors.IamCookieInterceptor;
+import org.hammock.sync.http.HttpConnectionRequestInterceptor;
+import org.hammock.sync.http.HttpConnectionResponseInterceptor;
+import org.hammock.sync.http.internal.interceptors.CookieInterceptor;
+import org.hammock.sync.http.internal.interceptors.IamCookieInterceptor;
 import org.hammock.sync.documentstore.DocumentStore;
 import org.hammock.sync.internal.replication.PullStrategy;
 import org.hammock.sync.internal.replication.PushStrategy;
