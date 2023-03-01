@@ -17,12 +17,12 @@
 package org.hammock.sync.internal.replication;
 
 import org.hammock.common.CouchTestBase;
-import org.hammock.http.HttpConnectionInterceptorContext;
-import org.hammock.http.HttpConnectionRequestInterceptor;
-import org.hammock.http.HttpConnectionResponseInterceptor;
-import org.hammock.http.internal.interceptors.CookieInterceptor;
-import org.hammock.http.internal.interceptors.CookieInterceptorBase;
-import org.hammock.http.internal.interceptors.IamCookieInterceptor;
+import org.hammock.sync.http.HttpConnectionInterceptorContext;
+import org.hammock.sync.http.HttpConnectionRequestInterceptor;
+import org.hammock.sync.http.HttpConnectionResponseInterceptor;
+import org.hammock.sync.http.internal.interceptors.CookieInterceptor;
+import org.hammock.sync.http.internal.interceptors.CookieInterceptorBase;
+import org.hammock.sync.http.internal.interceptors.IamCookieInterceptor;
 import org.hammock.sync.documentstore.DocumentStore;
 import org.hammock.sync.internal.documentstore.DatabaseImpl;
 import org.hammock.sync.internal.mazha.CouchClient;

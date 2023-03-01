@@ -14,9 +14,9 @@
 
 package org.hammock.sync.internal.replication;
 
-import org.hammock.http.HttpConnectionInterceptorContext;
-import org.hammock.http.HttpConnectionRequestInterceptor;
-import org.hammock.http.HttpConnectionResponseInterceptor;
+import org.hammock.sync.http.HttpConnectionInterceptorContext;
+import org.hammock.sync.http.HttpConnectionRequestInterceptor;
+import org.hammock.sync.http.HttpConnectionResponseInterceptor;
 
 /**
  * This request and response interceptor counts the number of times the interceptRequest and interceptResponse

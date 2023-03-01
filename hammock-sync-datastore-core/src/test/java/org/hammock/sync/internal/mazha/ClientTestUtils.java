@@ -23,8 +23,8 @@ import static org.hamcrest.CoreMatchers.startsWith;
 
 import org.hammock.sync.internal.common.CouchConstants;
 import org.hammock.sync.internal.common.CouchUtils;
-import org.hammock.http.Http;
-import org.hammock.http.HttpConnection;
+import org.hammock.sync.http.Http;
+import org.hammock.sync.http.HttpConnection;
 import org.hammock.sync.internal.util.JSONUtils;
 
 import org.hamcrest.CoreMatchers;

@@ -16,8 +16,8 @@ package org.hammock.sync.internal.replication;
 
 import org.hammock.sync.internal.common.CouchUtils;
 import org.hammock.common.RequireRunningCouchDB;
-import org.hammock.http.HttpConnectionInterceptorContext;
-import org.hammock.http.HttpConnectionRequestInterceptor;
+import org.hammock.sync.http.HttpConnectionInterceptorContext;
+import org.hammock.sync.http.HttpConnectionRequestInterceptor;
 import org.hammock.sync.replication.Replicator;
 
 import org.junit.Assert;

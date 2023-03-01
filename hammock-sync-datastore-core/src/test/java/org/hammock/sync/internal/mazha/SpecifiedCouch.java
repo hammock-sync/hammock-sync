@@ -21,8 +21,8 @@ import static org.hammock.common.TestOptions.COUCH_URI;
 import static org.hammock.common.TestOptions.COUCH_USERNAME;
 import static org.hammock.common.TestOptions.HTTP_PROTOCOL;
 
-import org.hammock.http.HttpConnectionRequestInterceptor;
-import org.hammock.http.HttpConnectionResponseInterceptor;
+import org.hammock.sync.http.HttpConnectionRequestInterceptor;
+import org.hammock.sync.http.HttpConnectionResponseInterceptor;
 
 import java.net.URI;
 import java.net.URISyntaxException;

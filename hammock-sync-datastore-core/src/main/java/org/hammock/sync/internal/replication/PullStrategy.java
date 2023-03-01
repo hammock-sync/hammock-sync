@@ -16,8 +16,8 @@
 
 package org.hammock.sync.internal.replication;
 
-import org.hammock.http.HttpConnectionRequestInterceptor;
-import org.hammock.http.HttpConnectionResponseInterceptor;
+import org.hammock.sync.http.HttpConnectionRequestInterceptor;
+import org.hammock.sync.http.HttpConnectionResponseInterceptor;
 import org.hammock.sync.documentstore.Attachment;
 import org.hammock.sync.documentstore.Database;
 import org.hammock.sync.internal.documentstore.DatabaseImpl;
