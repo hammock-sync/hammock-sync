@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/task_fragment">
+
+    <fragment android:id="@+id/task_fragment"
+        android:name="org.hammock.sync.sample.task.TaskFragment"
+        android:label="@string/fragment_main_title" >
+
+        <action android:id="@+id/action_task_to_new_task"
+            app:destination="@id/new_task_fragment" />
+
+        <action android:id="@+id/action_task_to_settings"
+            app:destination="@id/settings_fragment" />
+
+    </fragment>
+
+    <fragment android:id="@+id/new_task_fragment"
+        android:name="org.hammock.sync.sample.task.NewTaskFragment"
+        android:label="@string/fragment_new_task_title" />
+
+    <fragment android:id="@+id/settings_fragment"
+        android:name="org.hammock.sync.sample.settings.SettingsFragment"
+        android:label="@string/fragment_settings_title" />
+
+</navigation>

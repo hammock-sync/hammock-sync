@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_https">false</string>
+    <string name="default_host">10.0.2.2</string>
+    <string name="default_user">admin</string>
+    <string name="default_password">password</string>
+    <string name="default_dbname">test</string>
+</resources>

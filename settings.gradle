@@ -22,4 +22,4 @@ include 'hammock-sync-datastore-core'
 include 'hammock-sync-datastore-javase'
 include 'hammock-sync-datastore-android'
 include 'hammock-sync-datastore-android-encryption'
-
+include 'sample'
