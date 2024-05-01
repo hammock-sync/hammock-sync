@@ -144,185 +144,185 @@ public class UnindexedMatcherTest {
     @Test
     @SuppressWarnings("UnnecessaryBoxing")
     public void compareStringToNumber() {
-        assertThat(compareEq("1", new Integer(1)), is(false));
-        assertThat(compareEq(new Integer(1), "1"), is(false));
+        assertThat(compareEq("1", Integer.valueOf(1)), is(false));
+        assertThat(compareEq(Integer.valueOf(1), "1"), is(false));
 
-        assertThat(compareLT("1", new Integer(1)), is(false));
-        assertThat(compareLT(new Integer(1), "1"), is(true));
+        assertThat(compareLT("1", Integer.valueOf(1)), is(false));
+        assertThat(compareLT(Integer.valueOf(1), "1"), is(true));
 
-        assertThat(compareLTE("1", new Integer(1)), is(false));
-        assertThat(compareLTE(new Integer(1), "1"), is(true));
+        assertThat(compareLTE("1", Integer.valueOf(1)), is(false));
+        assertThat(compareLTE(Integer.valueOf(1), "1"), is(true));
 
-        assertThat(compareGT("1", new Integer(1)), is(true));
-        assertThat(compareGT(new Integer(1), "1"), is(false));
+        assertThat(compareGT("1", Integer.valueOf(1)), is(true));
+        assertThat(compareGT(Integer.valueOf(1), "1"), is(false));
 
-        assertThat(compareGTE("1", new Integer(1)), is(true));
-        assertThat(compareGTE(new Integer(1), "1"), is(false));
+        assertThat(compareGTE("1", Integer.valueOf(1)), is(true));
+        assertThat(compareGTE(Integer.valueOf(1), "1"), is(false));
     }
 
     @Test
     @SuppressWarnings("UnnecessaryBoxing")
     public void compareDoubleToDouble() {
-        assertThat(compareEq(new Double(1.0), new Double(1.0)), is(true));
-        assertThat(compareEq(new Double(1.0), new Double(1.00)), is(true));
-        assertThat(compareEq(new Double(1.0), new Double(1.1)), is(false));
-        assertThat(compareEq(new Double(1.1), new Double(1.0)), is(false));
+        assertThat(compareEq(Double.valueOf(1.0), Double.valueOf(1.0)), is(true));
+        assertThat(compareEq(Double.valueOf(1.0), Double.valueOf(1.00)), is(true));
+        assertThat(compareEq(Double.valueOf(1.0), Double.valueOf(1.1)), is(false));
+        assertThat(compareEq(Double.valueOf(1.1), Double.valueOf(1.0)), is(false));
 
-        assertThat(compareLT(new Double(1.0), new Double(1.0)), is(false));
-        assertThat(compareLT(new Double(1.0), new Double(1.00)), is(false));
-        assertThat(compareLT(new Double(1.0), new Double(1.1)), is(true));
-        assertThat(compareLT(new Double(1.1), new Double(1.0)), is(false));
+        assertThat(compareLT(Double.valueOf(1.0), Double.valueOf(1.0)), is(false));
+        assertThat(compareLT(Double.valueOf(1.0), Double.valueOf(1.00)), is(false));
+        assertThat(compareLT(Double.valueOf(1.0), Double.valueOf(1.1)), is(true));
+        assertThat(compareLT(Double.valueOf(1.1), Double.valueOf(1.0)), is(false));
 
-        assertThat(compareLTE(new Double(1.0), new Double(1.0)), is(true));
-        assertThat(compareLTE(new Double(1.0), new Double(1.00)), is(true));
-        assertThat(compareLTE(new Double(1.0), new Double(1.1)), is(true));
-        assertThat(compareLTE(new Double(1.1), new Double(1.0)), is(false));
+        assertThat(compareLTE(Double.valueOf(1.0), Double.valueOf(1.0)), is(true));
+        assertThat(compareLTE(Double.valueOf(1.0), Double.valueOf(1.00)), is(true));
+        assertThat(compareLTE(Double.valueOf(1.0), Double.valueOf(1.1)), is(true));
+        assertThat(compareLTE(Double.valueOf(1.1), Double.valueOf(1.0)), is(false));
 
-        assertThat(compareGT(new Double(1.0), new Double(1.0)), is(false));
-        assertThat(compareGT(new Double(1.0), new Double(1.00)), is(false));
-        assertThat(compareGT(new Double(1.0), new Double(1.1)), is(false));
-        assertThat(compareGT(new Double(1.1), new Double(1.0)), is(true));
+        assertThat(compareGT(Double.valueOf(1.0), Double.valueOf(1.0)), is(false));
+        assertThat(compareGT(Double.valueOf(1.0), Double.valueOf(1.00)), is(false));
+        assertThat(compareGT(Double.valueOf(1.0), Double.valueOf(1.1)), is(false));
+        assertThat(compareGT(Double.valueOf(1.1), Double.valueOf(1.0)), is(true));
 
-        assertThat(compareGTE(new Double(1.0), new Double(1.0)), is(true));
-        assertThat(compareGTE(new Double(1.0), new Double(1.00)), is(true));
-        assertThat(compareGTE(new Double(1.0), new Double(1.1)), is(false));
-        assertThat(compareGTE(new Double(1.1), new Double(1.0)), is(true));
+        assertThat(compareGTE(Double.valueOf(1.0), Double.valueOf(1.0)), is(true));
+        assertThat(compareGTE(Double.valueOf(1.0), Double.valueOf(1.00)), is(true));
+        assertThat(compareGTE(Double.valueOf(1.0), Double.valueOf(1.1)), is(false));
+        assertThat(compareGTE(Double.valueOf(1.1), Double.valueOf(1.0)), is(true));
     }
 
     @Test
     @SuppressWarnings("UnnecessaryBoxing")
     public void compareEqDoubleToLong() {
-        assertThat(compareEq(new Double(1.0), new Long(1l)), is(true));
-        assertThat(compareEq(new Long(1l), new Double(1.0)), is(true));
-        assertThat(compareEq(new Double(1.1), new Long(1l)), is(false));
-        assertThat(compareEq(new Long(1l), new Double(1.1)), is(false));
+        assertThat(compareEq(Double.valueOf(1.0), Long.valueOf(1)), is(true));
+        assertThat(compareEq(Long.valueOf(1), Double.valueOf(1.0)), is(true));
+        assertThat(compareEq(Double.valueOf(1.1), Long.valueOf(1)), is(false));
+        assertThat(compareEq(Long.valueOf(1), Double.valueOf(1.1)), is(false));
 
-        assertThat(compareLT(new Double(1.0), new Long(1l)), is(false));
-        assertThat(compareLT(new Long(1l), new Double(1.0)), is(false));
-        assertThat(compareLT(new Double(1.1), new Long(1l)), is(false));
-        assertThat(compareLT(new Long(2l), new Double(1.1)), is(false));
-        assertThat(compareLT(new Long(1l), new Double(1.1)), is(true));
-        assertThat(compareLT(new Double(1.1), new Long(2l)), is(true));
+        assertThat(compareLT(Double.valueOf(1.0), Long.valueOf(1)), is(false));
+        assertThat(compareLT(Long.valueOf(1), Double.valueOf(1.0)), is(false));
+        assertThat(compareLT(Double.valueOf(1.1), Long.valueOf(1)), is(false));
+        assertThat(compareLT(Long.valueOf(2), Double.valueOf(1.1)), is(false));
+        assertThat(compareLT(Long.valueOf(1), Double.valueOf(1.1)), is(true));
+        assertThat(compareLT(Double.valueOf(1.1), Long.valueOf(2)), is(true));
 
-        assertThat(compareLTE(new Double(1.0), new Long(1l)), is(true));
-        assertThat(compareLTE(new Long(1l), new Double(1.0)), is(true));
-        assertThat(compareLTE(new Double(1.1), new Long(1l)), is(false));
-        assertThat(compareLTE(new Long(2l), new Double(1.1)), is(false));
-        assertThat(compareLTE(new Long(1l), new Double(1.1)), is(true));
-        assertThat(compareLTE(new Double(1.1), new Long(2l)), is(true));
+        assertThat(compareLTE(Double.valueOf(1.0), Long.valueOf(1)), is(true));
+        assertThat(compareLTE(Long.valueOf(1), Double.valueOf(1.0)), is(true));
+        assertThat(compareLTE(Double.valueOf(1.1), Long.valueOf(1)), is(false));
+        assertThat(compareLTE(Long.valueOf(2), Double.valueOf(1.1)), is(false));
+        assertThat(compareLTE(Long.valueOf(1), Double.valueOf(1.1)), is(true));
+        assertThat(compareLTE(Double.valueOf(1.1), Long.valueOf(2)), is(true));
 
-        assertThat(compareGT(new Double(1.0), new Long(1l)), is(false));
-        assertThat(compareGT(new Long(1l), new Double(1.0)), is(false));
-        assertThat(compareGT(new Double(1.1), new Long(1l)), is(true));
-        assertThat(compareGT(new Long(2l), new Double(1.1)), is(true));
-        assertThat(compareGT(new Long(1l), new Double(1.1)), is(false));
-        assertThat(compareGT(new Double(1.1), new Long(2l)), is(false));
+        assertThat(compareGT(Double.valueOf(1.0), Long.valueOf(1)), is(false));
+        assertThat(compareGT(Long.valueOf(1), Double.valueOf(1.0)), is(false));
+        assertThat(compareGT(Double.valueOf(1.1), Long.valueOf(1)), is(true));
+        assertThat(compareGT(Long.valueOf(2), Double.valueOf(1.1)), is(true));
+        assertThat(compareGT(Long.valueOf(1), Double.valueOf(1.1)), is(false));
+        assertThat(compareGT(Double.valueOf(1.1), Long.valueOf(2)), is(false));
 
-        assertThat(compareGTE(new Double(1.0), new Long(1l)), is(true));
-        assertThat(compareGTE(new Long(1l), new Double(1.0)), is(true));
-        assertThat(compareGTE(new Double(1.1), new Long(1l)), is(true));
-        assertThat(compareGTE(new Long(2l), new Double(1.1)), is(true));
-        assertThat(compareGTE(new Long(1l), new Double(1.1)), is(false));
-        assertThat(compareGTE(new Double(1.1), new Long(2l)), is(false));
+        assertThat(compareGTE(Double.valueOf(1.0), Long.valueOf(1)), is(true));
+        assertThat(compareGTE(Long.valueOf(1), Double.valueOf(1.0)), is(true));
+        assertThat(compareGTE(Double.valueOf(1.1), Long.valueOf(1)), is(true));
+        assertThat(compareGTE(Long.valueOf(2), Double.valueOf(1.1)), is(true));
+        assertThat(compareGTE(Long.valueOf(1), Double.valueOf(1.1)), is(false));
+        assertThat(compareGTE(Double.valueOf(1.1), Long.valueOf(2)), is(false));
 
     }
 
     @Test
     @SuppressWarnings("UnnecessaryBoxing")
     public void compareEqDoubleToInt() {
-        assertThat(compareEq(new Double(1.0), new Integer(1)), is(true));
-        assertThat(compareEq(new Integer(1), new Double(1.0)), is(true));
-        assertThat(compareEq(new Double(1.1), new Integer(1)), is(false));
-        assertThat(compareEq(new Integer(1), new Double(1.1)), is(false));
+        assertThat(compareEq(Double.valueOf(1.0), Integer.valueOf(1)), is(true));
+        assertThat(compareEq(Integer.valueOf(1), Double.valueOf(1.0)), is(true));
+        assertThat(compareEq(Double.valueOf(1.1), Integer.valueOf(1)), is(false));
+        assertThat(compareEq(Integer.valueOf(1), Double.valueOf(1.1)), is(false));
 
-        assertThat(compareLT(new Double(1.0), new Integer(1)), is(false));
-        assertThat(compareLT(new Integer(1), new Double(1.0)), is(false));
-        assertThat(compareLT(new Double(1.1), new Integer(1)), is(false));
-        assertThat(compareLT(new Integer(2), new Double(1.1)), is(false));
-        assertThat(compareLT(new Integer(1), new Double(1.1)), is(true));
-        assertThat(compareLT(new Double(1.1), new Integer(2)), is(true));
+        assertThat(compareLT(Double.valueOf(1.0), Integer.valueOf(1)), is(false));
+        assertThat(compareLT(Integer.valueOf(1), Double.valueOf(1.0)), is(false));
+        assertThat(compareLT(Double.valueOf(1.1), Integer.valueOf(1)), is(false));
+        assertThat(compareLT(Integer.valueOf(2), Double.valueOf(1.1)), is(false));
+        assertThat(compareLT(Integer.valueOf(1), Double.valueOf(1.1)), is(true));
+        assertThat(compareLT(Double.valueOf(1.1), Integer.valueOf(2)), is(true));
 
-        assertThat(compareLTE(new Double(1.0), new Integer(1)), is(true));
-        assertThat(compareLTE(new Integer(1), new Double(1.0)), is(true));
-        assertThat(compareLTE(new Double(1.1), new Integer(1)), is(false));
-        assertThat(compareLTE(new Integer(2), new Double(1.1)), is(false));
-        assertThat(compareLTE(new Integer(1), new Double(1.1)), is(true));
-        assertThat(compareLTE(new Double(1.1), new Integer(2)), is(true));
+        assertThat(compareLTE(Double.valueOf(1.0), Integer.valueOf(1)), is(true));
+        assertThat(compareLTE(Integer.valueOf(1), Double.valueOf(1.0)), is(true));
+        assertThat(compareLTE(Double.valueOf(1.1), Integer.valueOf(1)), is(false));
+        assertThat(compareLTE(Integer.valueOf(2), Double.valueOf(1.1)), is(false));
+        assertThat(compareLTE(Integer.valueOf(1), Double.valueOf(1.1)), is(true));
+        assertThat(compareLTE(Double.valueOf(1.1), Integer.valueOf(2)), is(true));
 
-        assertThat(compareGT(new Double(1.0), new Integer(1)), is(false));
-        assertThat(compareGT(new Integer(1), new Double(1.0)), is(false));
-        assertThat(compareGT(new Double(1.1), new Integer(1)), is(true));
-        assertThat(compareGT(new Integer(2), new Double(1.1)), is(true));
-        assertThat(compareGT(new Integer(1), new Double(1.1)), is(false));
-        assertThat(compareGT(new Double(1.1), new Integer(2)), is(false));
+        assertThat(compareGT(Double.valueOf(1.0), Integer.valueOf(1)), is(false));
+        assertThat(compareGT(Integer.valueOf(1), Double.valueOf(1.0)), is(false));
+        assertThat(compareGT(Double.valueOf(1.1), Integer.valueOf(1)), is(true));
+        assertThat(compareGT(Integer.valueOf(2), Double.valueOf(1.1)), is(true));
+        assertThat(compareGT(Integer.valueOf(1), Double.valueOf(1.1)), is(false));
+        assertThat(compareGT(Double.valueOf(1.1), Integer.valueOf(2)), is(false));
 
-        assertThat(compareGTE(new Double(1.0), new Integer(1)), is(true));
-        assertThat(compareGTE(new Integer(1), new Double(1.0)), is(true));
-        assertThat(compareGTE(new Double(1.1), new Integer(1)), is(true));
-        assertThat(compareGTE(new Integer(2), new Double(1.1)), is(true));
-        assertThat(compareGTE(new Integer(1), new Double(1.1)), is(false));
-        assertThat(compareGTE(new Double(1.1), new Integer(2)), is(false));
+        assertThat(compareGTE(Double.valueOf(1.0), Integer.valueOf(1)), is(true));
+        assertThat(compareGTE(Integer.valueOf(1), Double.valueOf(1.0)), is(true));
+        assertThat(compareGTE(Double.valueOf(1.1), Integer.valueOf(1)), is(true));
+        assertThat(compareGTE(Integer.valueOf(2), Double.valueOf(1.1)), is(true));
+        assertThat(compareGTE(Integer.valueOf(1), Double.valueOf(1.1)), is(false));
+        assertThat(compareGTE(Double.valueOf(1.1), Integer.valueOf(2)), is(false));
     }
 
     @Test
     @SuppressWarnings("UnnecessaryBoxing")
     public void compareEqLongToLong() {
-        assertThat(compareEq(new Long(1l), new Long(1l)), is(true));
-        assertThat(compareEq(new Long(1l), new Long(2l)), is(false));
-        assertThat(compareEq(new Long(2l), new Long(1l)), is(false));
+        assertThat(compareEq(Long.valueOf(1), Long.valueOf(1)), is(true));
+        assertThat(compareEq(Long.valueOf(1), Long.valueOf(2)), is(false));
+        assertThat(compareEq(Long.valueOf(2), Long.valueOf(1)), is(false));
 
-        assertThat(compareLT(new Long(1l), new Long(1l)), is(false));
-        assertThat(compareLT(new Long(1l), new Long(2l)), is(true));
-        assertThat(compareLT(new Long(2l), new Long(1l)), is(false));
+        assertThat(compareLT(Long.valueOf(1), Long.valueOf(1)), is(false));
+        assertThat(compareLT(Long.valueOf(1), Long.valueOf(2)), is(true));
+        assertThat(compareLT(Long.valueOf(2), Long.valueOf(1)), is(false));
 
-        assertThat(compareLTE(new Long(1l), new Long(1l)), is(true));
-        assertThat(compareLTE(new Long(1l), new Long(2l)), is(true));
-        assertThat(compareLTE(new Long(2l), new Long(1l)), is(false));
+        assertThat(compareLTE(Long.valueOf(1), Long.valueOf(1)), is(true));
+        assertThat(compareLTE(Long.valueOf(1), Long.valueOf(2)), is(true));
+        assertThat(compareLTE(Long.valueOf(2), Long.valueOf(1)), is(false));
 
-        assertThat(compareGT(new Long(1l), new Long(1l)), is(false));
-        assertThat(compareGT(new Long(1l), new Long(2l)), is(false));
-        assertThat(compareGT(new Long(2l), new Long(1l)), is(true));
+        assertThat(compareGT(Long.valueOf(1), Long.valueOf(1)), is(false));
+        assertThat(compareGT(Long.valueOf(1), Long.valueOf(2)), is(false));
+        assertThat(compareGT(Long.valueOf(2), Long.valueOf(1)), is(true));
 
-        assertThat(compareGTE(new Long(1l), new Long(1l)), is(true));
-        assertThat(compareGTE(new Long(1l), new Long(2l)), is(false));
-        assertThat(compareGTE(new Long(2l), new Long(1l)), is(true));
+        assertThat(compareGTE(Long.valueOf(1), Long.valueOf(1)), is(true));
+        assertThat(compareGTE(Long.valueOf(1), Long.valueOf(2)), is(false));
+        assertThat(compareGTE(Long.valueOf(2), Long.valueOf(1)), is(true));
     }
 
     @Test
     @SuppressWarnings("UnnecessaryBoxing")
     public void compareEqLongToInt() {
-        assertThat(compareEq(new Long(1l), new Integer(1)), is(true));
-        assertThat(compareEq(new Integer(1), new Long(1l)), is(true));
-        assertThat(compareEq(new Long(1l), new Integer(2)), is(false));
-        assertThat(compareEq(new Integer(2), new Long(1l)), is(false));
+        assertThat(compareEq(Long.valueOf(1), Integer.valueOf(1)), is(true));
+        assertThat(compareEq(Integer.valueOf(1), Long.valueOf(1)), is(true));
+        assertThat(compareEq(Long.valueOf(1), Integer.valueOf(2)), is(false));
+        assertThat(compareEq(Integer.valueOf(2), Long.valueOf(1)), is(false));
 
-        assertThat(compareLT(new Long(1l), new Integer(1)), is(false));
-        assertThat(compareLT(new Integer(1), new Long(1l)), is(false));
-        assertThat(compareLT(new Long(2l), new Integer(1)), is(false));
-        assertThat(compareLT(new Integer(2), new Long(1l)), is(false));
-        assertThat(compareLT(new Integer(1), new Long(2l)), is(true));
-        assertThat(compareLT(new Long(1l), new Integer(2)), is(true));
+        assertThat(compareLT(Long.valueOf(1), Integer.valueOf(1)), is(false));
+        assertThat(compareLT(Integer.valueOf(1), Long.valueOf(1)), is(false));
+        assertThat(compareLT(Long.valueOf(2), Integer.valueOf(1)), is(false));
+        assertThat(compareLT(Integer.valueOf(2), Long.valueOf(1)), is(false));
+        assertThat(compareLT(Integer.valueOf(1), Long.valueOf(2)), is(true));
+        assertThat(compareLT(Long.valueOf(1), Integer.valueOf(2)), is(true));
 
-        assertThat(compareLTE(new Long(1l), new Integer(1)), is(true));
-        assertThat(compareLTE(new Integer(1), new Long(1l)), is(true));
-        assertThat(compareLTE(new Long(2l), new Integer(1)), is(false));
-        assertThat(compareLTE(new Integer(2), new Long(1l)), is(false));
-        assertThat(compareLTE(new Integer(1), new Long(2l)), is(true));
-        assertThat(compareLTE(new Long(1l), new Integer(2)), is(true));
+        assertThat(compareLTE(Long.valueOf(1), Integer.valueOf(1)), is(true));
+        assertThat(compareLTE(Integer.valueOf(1), Long.valueOf(1)), is(true));
+        assertThat(compareLTE(Long.valueOf(2), Integer.valueOf(1)), is(false));
+        assertThat(compareLTE(Integer.valueOf(2), Long.valueOf(1)), is(false));
+        assertThat(compareLTE(Integer.valueOf(1), Long.valueOf(2)), is(true));
+        assertThat(compareLTE(Long.valueOf(1), Integer.valueOf(2)), is(true));
 
-        assertThat(compareGT(new Long(1l), new Integer(1)), is(false));
-        assertThat(compareGT(new Integer(1), new Long(1l)), is(false));
-        assertThat(compareGT(new Long(2l), new Integer(1)), is(true));
-        assertThat(compareGT(new Integer(2), new Long(1l)), is(true));
-        assertThat(compareGT(new Integer(1), new Long(2l)), is(false));
-        assertThat(compareGT(new Long(1l), new Integer(2)), is(false));
+        assertThat(compareGT(Long.valueOf(1), Integer.valueOf(1)), is(false));
+        assertThat(compareGT(Integer.valueOf(1), Long.valueOf(1)), is(false));
+        assertThat(compareGT(Long.valueOf(2), Integer.valueOf(1)), is(true));
+        assertThat(compareGT(Integer.valueOf(2), Long.valueOf(1)), is(true));
+        assertThat(compareGT(Integer.valueOf(1), Long.valueOf(2)), is(false));
+        assertThat(compareGT(Long.valueOf(1), Integer.valueOf(2)), is(false));
 
-        assertThat(compareGTE(new Long(1l), new Integer(1)), is(true));
-        assertThat(compareGTE(new Integer(1), new Long(1l)), is(true));
-        assertThat(compareGTE(new Long(2l), new Integer(1)), is(true));
-        assertThat(compareGTE(new Integer(2), new Long(1l)), is(true));
-        assertThat(compareGTE(new Integer(1), new Long(2l)), is(false));
-        assertThat(compareGTE(new Long(1l), new Integer(2)), is(false));
+        assertThat(compareGTE(Long.valueOf(1), Integer.valueOf(1)), is(true));
+        assertThat(compareGTE(Integer.valueOf(1), Long.valueOf(1)), is(true));
+        assertThat(compareGTE(Long.valueOf(2), Integer.valueOf(1)), is(true));
+        assertThat(compareGTE(Integer.valueOf(2), Long.valueOf(1)), is(true));
+        assertThat(compareGTE(Integer.valueOf(1), Long.valueOf(2)), is(false));
+        assertThat(compareGTE(Long.valueOf(1), Integer.valueOf(2)), is(false));
     }
 
     @Test
