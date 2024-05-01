@@ -14,6 +14,7 @@
 
 package org.hammock.sync.internal.documentstore;
 
+import org.apache.commons.io.FileUtils;
 import org.hammock.sync.documentstore.Attachment;
 import org.hammock.sync.documentstore.AttachmentException;
 import org.hammock.sync.documentstore.UnsavedFileAttachment;
@@ -28,6 +29,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.InvalidKeyException;
@@ -142,11 +144,23 @@ public class AttachmentStreamFactoryTest extends BasicDatastoreTestBase {
         IOUtils.copy(new FileInputStream(plainText), out);
         out.close();
 
-        Assert.assertTrue("Writing to unencrypted, encoded stream didn't give correct output",
+
+        // Starting from Java 16 and onwards, this 10th byte has been modified to the value 255, whereas it was previously set to 0 before Java 16.
+        // We can no longer compare to a previous gziped file until the transition from Java 11 to Java 17 is completed.
+        // We compare the unziped content instead.
+        /* Assert.assertTrue("Writing to unencrypted, encoded stream didn't give correct output",
                 IOUtils.contentEquals(
                         new FileInputStream(actualOutput),
                         new FileInputStream(zippedPlainText)));
+        */
 
+        GZIPInputStream gzin = new GZIPInputStream(new FileInputStream(actualOutput));
+        Assert.assertTrue("Writing to unencrypted, encoded stream didn't give correct output",
+                IOUtils.contentEquals(
+                        gzin,
+                        new FileInputStream(plainText)));
+
+        gzin.close();
     }
 
     @Test

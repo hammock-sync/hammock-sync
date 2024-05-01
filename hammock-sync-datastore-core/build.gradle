@@ -23,7 +23,7 @@ dependencies {
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.14.2'
     implementation group: 'commons-codec', name: 'commons-codec', version:'1.15'
-    implementation group: 'commons-io', name: 'commons-io', version:'2.11.0'
+    implementation group: 'commons-io', name: 'commons-io', version:'2.16.1'
     compileOnly(group: 'com.squareup.okhttp3', name: 'okhttp-urlconnection', version: '3.13.1')
 
     testImplementation group: 'org.hamcrest', name: 'hamcrest-all', version:'1.3'
