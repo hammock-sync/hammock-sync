@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 
 import org.hammock.sync.documentstore.ConflictException;
@@ -239,8 +239,7 @@ public class TasksModel {
             throws URISyntaxException {
         // We store this in plain text for the purposes of simple demonstration,
         // you might want to use something more secure.
-        String defaultPrefsName = PreferenceManager.getDefaultSharedPreferencesName(this.mContext);
-        SharedPreferences sharedPref = mContext.getSharedPreferences(defaultPrefsName, Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this.mContext);
         boolean https = sharedPref.getBoolean(MainActivity.SETTINGS_CLOUDANT_HTTPS, false);
         String scheme = https? "https" : "http";
         String host = sharedPref.getString(MainActivity.SETTINGS_CLOUDANT_HOST, "");
@@ -248,7 +247,7 @@ public class TasksModel {
         String secret = sharedPref.getString(MainActivity.SETTINGS_CLOUDANT_SECRET, "");
         String dbName = sharedPref.getString(MainActivity.SETTINGS_CLOUDANT_DB, "");
 
-        // We recommend always using HTTPS to talk to Cloudant.
+        // We recommend always using HTTPS to talk to CouchDB.
         return new URI(scheme, username + ":" + secret, host, 5984, "/" + dbName, null, null);
     }
 

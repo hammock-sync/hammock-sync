@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         MaterialToolbar toolbar = findViewById(R.id.toolbar);

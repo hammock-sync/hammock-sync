@@ -1,9 +1,9 @@
 # Hammock Sync Android (DRAFT - NOT YET PUBLISHED)
-[![JitpPack core](https://jitpack.io/v/hammock-sync/hammock-sync.svg)](https://jitpack.io/#hammock-sync/hammock-sync)
+[![JitPack core](https://jitpack.io/v/hammock-sync/hammock-sync.svg)](https://jitpack.io/#hammock-sync/hammock-sync)
 
 | Artifact | Links |
 | ---|--- |
-| Core | [![JitpPack core](https://img.shields.io/jitpack/v/hammock-sync/hammock-sync?label=Jitpack%20Core)](https://jitpack.io/com/github/hammock-sync/hammock-sync/hammock-sync-datastore-core/0.0.0-SNAPSHOT/) |
+| Core | [![JitPack core](https://img.shields.io/jitpack/v/hammock-sync/hammock-sync?label=Jitpack%20Core)](https://jitpack.io/com/github/hammock-sync/hammock-sync/hammock-sync-datastore-core/0.0.0-SNAPSHOT/) |
 | Android | [![JitPack android](https://img.shields.io/jitpack/v/hammock-sync/hammock-sync?label=Jitpack%20Android)](https://jitpack.io/com/github/hammock-sync/hammock-sync/hammock-sync-datastore-android/0.0.0-SNAPSHOT/") |
 | Android (encryption) | [![maven-central-android-encryption](https://img.shields.io/jitpack/v/hammock-sync/hammock-sync?label=Jitpack%20Android%20Encryption)](https://jitpack.io/com/github/hammock-sync/hammock-sync/hammock-sync-datastore-android-encryption/0.0.0-SNAPSHOT/") | 
 | Java SE | [![Jitpack javase](https://img.shields.io/jitpack/v/hammock-sync/hammock-sync?label=Jitpack%20JavaSE)](https://jitpack.io/com/github/hammock-sync/hammock-sync/hammock-sync-datastore-javase/0.0.0-SNAPSHOT/") |
@@ -17,8 +17,8 @@ device or in the remote database.**
 
 Hammock Sync is an [Apache CouchDB&trade;][acdb]
 replication-protocol-compatible datastore for
-devices that don't want or need to run a full CouchDB instance. It was originaly built
-by [Cloudant](https://cloudant.com), building on the work of many others and now maintanied and modernized
+devices that don't want or need to run a full CouchDB instance. It was originally built
+by [Cloudant](https://cloudant.com), building on the work of many others and now maintained and modernized
 by the Hammock Sync project. This work is available under the [Apache 2.0 licence][ap2].
 
 [ap2]: https://github.com/cloudant/sync-android/blob/master/LICENSE

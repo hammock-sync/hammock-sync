@@ -8,12 +8,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.hammock.sync.sample.R;
 import org.hammock.sync.sample.task.model.Task;
@@ -21,7 +19,7 @@ import org.hammock.sync.sample.task.model.TasksModel;
 
 public class NewTaskFragment extends Fragment {
 
-    public NewTaskFragment(){
+    public NewTaskFragment() {
         super(R.layout.fragment_new_task);
     }
 
@@ -44,7 +42,7 @@ public class NewTaskFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                btn.setEnabled(s.toString().length() > 0);
+                btn.setEnabled(!s.toString().isEmpty());
             }
 
             @Override
@@ -54,10 +52,13 @@ public class NewTaskFragment extends Fragment {
         });
 
         btn.setOnClickListener((v) -> {
-            String label = et.getText().toString();
-            if(!label.isEmpty()) {
-                tasksModel.createDocument(new Task(label));
-                Navigation.findNavController(view).navigateUp();
+            Editable field = et.getText();
+            if (field != null) {
+                String label = field.toString();
+                if (!label.isEmpty()) {
+                    tasksModel.createDocument(new Task(label));
+                    Navigation.findNavController(view).navigateUp();
+                }
             }
         });
     }
