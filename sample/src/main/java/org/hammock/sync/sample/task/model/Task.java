@@ -1,5 +1,6 @@
 package org.hammock.sync.sample.task.model;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.hammock.sync.documentstore.DocumentRevision;
@@ -9,7 +10,7 @@ import java.util.Map;
 
 public class Task {
 
-    public static final String DOC_TYPE = "com.cloudant.sync.example.task";
+    public static final String DOC_TYPE = "com.hammock.sync.example.task";
     public static final String PARAM_TYPE = "type";
     public static final String PARAM_COMPLETED = "completed";
     public static final String PARAM_DESCRIPTION = "description";
@@ -53,6 +54,7 @@ public class Task {
         this.description = desc;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "{ desc: " + getDescription() + ", completed: " + isCompleted() + "}";

@@ -11,12 +11,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.NavUtils;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
-import androidx.navigation.ActivityNavigator;
-import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
@@ -43,7 +40,6 @@ import java.util.List;
 public class TaskFragment extends Fragment implements ReplicationEventListener, TaskAdapter.TaskItemListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final String TAG = TaskFragment.class.getSimpleName();
-    private FloatingActionButton fab;
     private LinearProgressIndicator progress;
     private TaskAdapter taskAdapter;
     private RecyclerView recyclerView;
@@ -63,7 +59,7 @@ public class TaskFragment extends Fragment implements ReplicationEventListener, 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(requireContext());
         sharedPref.registerOnSharedPreferenceChangeListener(this);
 
-        fab = view.findViewById(R.id.fab);
+        FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener((v) -> {
             NavDirections directions = TaskFragmentDirections.actionTaskToNewTask();
             Navigation.findNavController(view).navigate(directions);
