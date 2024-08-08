@@ -26,6 +26,8 @@ package org.hammock.sync.internal.sqlite.android;
  * Created by estebanmlaver.
  */
 
+import android.database.SQLException;
+
 import org.hammock.sync.internal.android.ContentValues;
 import org.hammock.sync.documentstore.encryption.KeyProvider;
 import org.hammock.sync.internal.documentstore.encryption.KeyUtils;
@@ -33,9 +35,8 @@ import org.hammock.sync.internal.sqlite.Cursor;
 import org.hammock.sync.internal.sqlite.SQLDatabase;
 import org.hammock.sync.internal.util.Misc;
 
-import net.sqlcipher.database.SQLiteConstraintException;
-import net.sqlcipher.database.SQLiteDatabase;
-import net.sqlcipher.database.SQLiteException;
+import net.zetetic.database.sqlcipher.SQLiteDatabase;
+
 
 import java.io.File;
 
@@ -52,9 +53,7 @@ public class AndroidSQLCipherSQLite extends SQLDatabase {
     public static AndroidSQLCipherSQLite open(File path, KeyProvider provider) {
 
         //Call SQLCipher-based method for opening database, or creating if database not found
-        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(path,
-                KeyUtils.sqlCipherKeyForKeyProvider(provider), null);
-
+        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(path.toString(),KeyUtils.sqlCipherKeyForKeyProvider(provider),null,null);
         return new AndroidSQLCipherSQLite(db);
     }
 
@@ -66,7 +65,7 @@ public class AndroidSQLCipherSQLite extends SQLDatabase {
     public void compactDatabase() {
         try {
             database.execSQL("VACUUM");
-        } catch (net.sqlcipher.SQLException e) {
+        } catch (SQLException e) {
             String error = "Fatal error running 'VACUUM', the database is probably malfunctioning.";
             throw new IllegalStateException(error);
         }
@@ -110,7 +109,7 @@ public class AndroidSQLCipherSQLite extends SQLDatabase {
         Misc.checkNotNullOrEmpty(sql.trim(), "Input SQL");
         try {
             this.database.execSQL(sql);
-        } catch (net.sqlcipher.SQLException e) {
+        } catch (SQLException e) {
             throw new java.sql.SQLException(e);
         }
     }
@@ -124,7 +123,7 @@ public class AndroidSQLCipherSQLite extends SQLDatabase {
         Misc.checkNotNullOrEmpty(sql.trim(), "Input SQL");
         try {
             this.database.execSQL(sql, bindArgs);
-        } catch (net.sqlcipher.SQLException e) {
+        } catch (SQLException e) {
             throw new java.sql.SQLException(e);
         }
     }
@@ -143,7 +142,7 @@ public class AndroidSQLCipherSQLite extends SQLDatabase {
     public Cursor rawQuery(String sql, String[] values) throws java.sql.SQLException {
         try {
             return new AndroidSQLiteCursor(this.database.rawQuery(sql, values));
-        } catch (SQLiteException e) {
+        } catch (SQLException e) {
             throw new java.sql.SQLException(e);
         }
     }
@@ -165,7 +164,7 @@ public class AndroidSQLCipherSQLite extends SQLDatabase {
         try {
             return this.database.insertWithOnConflict("\""+table+"\"", null,
                     createAndroidContentValues(initialValues), conflictAlgorithm);
-        } catch (SQLiteConstraintException sqlce){
+        } catch (Exception sqlce){
             return -1;
         }
     }
