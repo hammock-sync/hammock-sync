@@ -55,7 +55,7 @@ tasks.withType(Test) {
         }
     }
     // the native dir is one directory up from the core project dir
-    systemProperty "sqlite4java.library.path", "../hammock-sync-datastore-javase/native"
+    systemProperty "sqlite4java.library.path", "../datastore-javase/native"
     systemProperty "file.encoding", "UTF-8"
 
 }
