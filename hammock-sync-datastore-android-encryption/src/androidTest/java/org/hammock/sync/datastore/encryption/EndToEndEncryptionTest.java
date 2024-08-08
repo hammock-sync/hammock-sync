@@ -41,7 +41,7 @@ import org.hammock.sync.query.QueryException;
 import org.hammock.sync.query.QueryResult;
 import org.hammock.sync.util.TestUtilsEncrypt;
 
-import net.sqlcipher.database.SQLiteDatabase;
+import net.zetetic.database.sqlcipher.SQLiteDatabase;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
@@ -83,7 +83,8 @@ public class EndToEndEncryptionTest {
 
     static {
         // Load SQLCipher libraries
-        SQLiteDatabase.loadLibs(ProviderTestUtil.getContext());
+        System.loadLibrary("sqlcipher");
+        //SQLiteDatabase.loadLibs(ProviderTestUtil.getContext());
     }
 
     @Parameterized.Parameters(name = "{index}: encryption={0}")
