@@ -18,8 +18,8 @@ pluginManagement {
     }
 }
 
-include 'hammock-sync-datastore-core'
-include 'hammock-sync-datastore-javase'
-include 'hammock-sync-datastore-android'
-include 'hammock-sync-datastore-android-encryption'
+include 'datastore-core'
+include 'datastore-javase'
+include 'datastore-android'
+include 'datastore-android-encryption'
 include 'sample'

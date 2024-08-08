@@ -19,8 +19,7 @@ repositories {
 }
 
 dependencies {
-    implementation project(':hammock-sync-datastore-core')
-
+    implementation project(':datastore-core')
     implementation group: 'com.almworks.sqlite4java', name: 'sqlite4java', version: '1.0.392'
 
     // there are a couple of unit tests in this project
@@ -30,7 +29,7 @@ dependencies {
     testImplementation 'commons-validator:commons-validator:1.7'
     // and we depend on some test utilities over in core
 
-    testImplementation project(':hammock-sync-datastore-core').sourceSets.test.output
+    testImplementation project(':datastore-core').sourceSets.test.output
 }
 
 task copyFixtures(type: Copy) {

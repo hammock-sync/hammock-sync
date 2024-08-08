@@ -58,8 +58,8 @@ configurations.all {
 dependencies {
     implementation "net.zetetic:sqlcipher-android:4.6.0@aar"
     implementation "androidx.sqlite:sqlite:2.3.0"
-    implementation project(':hammock-sync-datastore-android')
-    implementation project(':hammock-sync-datastore-core')
+    implementation project(':datastore-android')
+    implementation project(':datastore-core')
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.14.2'
     implementation group: 'commons-codec', name: 'commons-codec', version:'1.15'
@@ -99,6 +99,21 @@ publishing {
         release(MavenPublication) {
             afterEvaluate {
                 from components.release
+            }
+            pom {
+                name = 'Hammock Sync Android Encription Library'
+                description = 'Android encripted storage implemenation for the Hammock Sync Library'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/hammock-sync/hammock-sync.git'
+                    url = 'https://github.com/hammock-sync/hammock-sync'
+                }
+
             }
         }
     }
