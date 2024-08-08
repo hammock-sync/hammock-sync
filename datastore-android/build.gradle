@@ -32,7 +32,7 @@ android {
         androidTest {
             java {
                 srcDirs = ["/src/androidTest/java" ,
-                           "../hammock-sync-datastore-core/src/test/java"
+                           "../datastore-core/src/test/java"
                 ]
                 // we would exclude these via categories but it doesn't like the android runner respects them
                 exclude '**/Unreliable*Test*'
