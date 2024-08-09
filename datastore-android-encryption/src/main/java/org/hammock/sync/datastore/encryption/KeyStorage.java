@@ -42,7 +42,7 @@ import java.util.logging.Logger;
 class KeyStorage {
     private static final Logger LOGGER = Logger.getLogger(KeyStorage.class.getCanonicalName());
     private static final String CDTENCRYPTION_KEYCHAINSTORAGE_SERVICE_VALUE =
-            "com.cloudant.sync.CDTEncryptionKeychainStorage.keychain.service";
+            "com.hammock.sync.CDTEncryptionKeychainStorage.keychain.service";
 
     private static final String PREF_NAME_DPK = "dpk"; //$NON-NLS-1$
 

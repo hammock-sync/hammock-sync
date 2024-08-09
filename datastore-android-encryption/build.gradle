@@ -58,8 +58,8 @@ configurations.all {
 dependencies {
     implementation "net.zetetic:sqlcipher-android:4.6.0@aar"
     implementation "androidx.sqlite:sqlite:2.3.0"
-    implementation project(':datastore-android')
-    implementation project(':datastore-core')
+    api project(':datastore-android')
+    api project(':datastore-core')
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.14.2'
     implementation group: 'commons-codec', name: 'commons-codec', version:'1.15'
@@ -105,7 +105,7 @@ publishing {
                 description = 'Android encripted storage implemenation for the Hammock Sync Library'
                 licenses {
                     license {
-                        name = 'The Apache License, Version 2.0'
+                        name = 'Apache-2.0'
                         url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
