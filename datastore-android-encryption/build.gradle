@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
 def testConfig = convertTestSysPropsToHash()
 
@@ -108,7 +109,7 @@ publishing {
             }
             pom {
                 name = 'Hammock Sync Android Encription Library'
-                description = 'Android encripted storage implemenation for the Hammock Sync Library'
+                description = 'Android encripted storage implementation for the Hammock Sync Library'
                 licenses {
                     license {
                         name = 'Apache-2.0'
@@ -123,4 +124,8 @@ publishing {
             }
         }
     }
+}
+signing {
+    required { isReleaseVersion && gradle.taskGraph.hasTask("publishToMavenLocal")}
+    sign publishing.publications.release
 }
