@@ -1,12 +1,16 @@
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 apply plugin: 'com.github.spotbugs'
+apply plugin: 'signing'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
 java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
     toolchain {
         sourceCompatibility = JavaLanguageVersion.of(8)
         targetCompatibility = JavaLanguageVersion.of(8)
@@ -68,7 +72,7 @@ publishing {
             from components.java
             pom {
                 name = 'Hammock Sync JavaSE support library'
-                description = 'JavaSE Support for Hammock Sync Library'
+                description = 'JavaSE support for Hammock Sync Library'
                 licenses {
                     license {
                         name = 'Apache-2.0'
@@ -82,6 +86,11 @@ publishing {
             }
         }
     }
+}
+
+signing {
+    required { !isReleaseVersion && gradle.taskGraph.hasTask("publishToMavenLocal")}
+    sign publishing.publications.mavenJava
 }
 
 spotbugs {

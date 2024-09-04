@@ -1,11 +1,18 @@
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 apply plugin: 'com.github.spotbugs'
+apply plugin: 'signing'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
-
+/*
+sourceSets {
+    test {
+        java.srcDirs = ['src/test/java']
+    }
+}
+*/
 java {
 
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -117,7 +124,7 @@ publishing {
             from components.java
             pom {
                 name = 'Hammock Sync Core Library'
-                description = 'Main logic implemenation for the Hammock Sync Library'
+                description = 'Main logic for the Hammock Sync Library'
                 licenses {
                     license {
                         name = 'Apache-2.0'
@@ -131,6 +138,11 @@ publishing {
             }
         }
     }
+}
+
+signing {
+    required { isReleaseVersion && gradle.taskGraph.hasTask("publishToMavenLocal")}
+    sign publishing.publications.mavenJava
 }
 
 spotbugs {
