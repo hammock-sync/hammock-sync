@@ -1,4 +1,4 @@
-# Hammock Sync Android (PRE-RELEASE)
+# Hammock Sync Android
 [![JitPack core](https://jitpack.io/v/hammock-sync/hammock-sync.svg)](https://jitpack.io/#hammock-sync/hammock-sync)
 
 | Artifact | Links                                                                                                                                                                                                                                   |
