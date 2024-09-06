@@ -94,7 +94,7 @@ signing {
 }
 
 spotbugs {
-    toolVersion = "3.1.12"
+    toolVersion = "4.7.3"
     // Report only high severity bugs for now
     reportLevel = "low"
     // The code base is pretty small so use max effort
