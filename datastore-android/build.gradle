@@ -70,7 +70,7 @@ dependencies {
     api project(':datastore-core')
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.14.2'
     implementation group: 'commons-codec', name: 'commons-codec', version:'1.15'
-    implementation group: 'commons-io', name: 'commons-io', version:'2.11.0'
+    implementation group: 'commons-io', name: 'commons-io', version:'2.16.1'
 
     // for unit tests
     androidTestImplementation 'org.hamcrest:hamcrest-all:1.3'
