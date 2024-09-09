@@ -125,10 +125,17 @@ publishing {
             pom {
                 name = 'Hammock Sync Core Library'
                 description = 'Main logic for the Hammock Sync Library'
+                url = 'https://github.com/hammock-sync/hammock-sync'
                 licenses {
                     license {
                         name = 'Apache-2.0'
                         url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers{
+                    developer {
+                        name = 'Hammock Sync Team'
+                        email = 'hammock-sync@lksnext.com'
                     }
                 }
                 scm {

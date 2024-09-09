@@ -11,7 +11,7 @@ repositories {
 }
 
 allprojects {
-    group = 'org.hammock.sync'
+    group = 'org.hammock-sync'
     version = new File(rootDir, 'VERSION').text.trim()
     description = """hammock-sync"""
     //if the version says "snapshot" anywhere assume it is not a release
