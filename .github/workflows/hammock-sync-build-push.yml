@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        couchdb: [3.3.3]
+        couchdb: [3.4.1]
       fail-fast: true
       max-parallel: 1
     steps:
