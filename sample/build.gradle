@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    namespace 'org.hammock.sync.sample'
-    compileSdk 35
+    namespace = 'org.hammock.sync.sample'
+    compileSdk = 36
 
     defaultConfig {
         applicationId "org.hammock.sync.sample"
         minSdk 29
-        targetSdk 35
+        targetSdk 36
         versionCode 1
         versionName "1.0"
 
@@ -32,12 +32,12 @@ android {
 dependencies {
 
     implementation project(':datastore-android')
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.preference:preference:1.2.1'
-    implementation 'androidx.navigation:navigation-fragment:2.7.7'
-    implementation 'androidx.navigation:navigation-ui:2.7.7'
+    implementation 'androidx.navigation:navigation-fragment:2.9.6'
+    implementation 'androidx.navigation:navigation-ui:2.9.6'
 
-    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'com.google.android.material:material:1.13.0'
 }
 
 repositories {

@@ -1,3 +1,5 @@
+import com.github.spotbugs.snom.Effort
+
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 apply plugin: 'com.github.spotbugs'
@@ -151,7 +153,7 @@ publishing {
 }
 
 signing {
-    required { isReleaseVersion && gradle.taskGraph.hasTask("publishToMavenLocal")}
+    required = { isReleaseVersion && gradle.taskGraph.hasTask("publishToMavenLocal")}
     sign publishing.publications.mavenJava
 }
 
@@ -159,9 +161,9 @@ spotbugs {
     // toolVersion = "3.1.12"
     toolVersion = '4.7.3'
     // Report only high severity bugs for now
-    reportLevel = "low"
+    // reportLevel = 'low'
     // The code base is pretty small so use max effort
-    effort = "max"
+    effort = Effort.MAX
     // We don't want to run findbugs on the test code yet
     //   sourceSets = [sourceSets.main]
     // Exclude a couple of known bugs until we get the chance to fix them

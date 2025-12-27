@@ -5,17 +5,17 @@ apply plugin: 'signing'
 def testConfig = convertTestSysPropsToHash()
 
 android {
-    namespace 'org.hammock.sync'
-    compileSdk 35
+    namespace = 'org.hammock.sync'
+    compileSdk = 36
     defaultConfig {
         minSdk 29
-        targetSdk 35
+        targetSdk 36
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String[][]", "TEST_CONFIG", testConfig
     }
 
     buildFeatures {
-        buildConfig true
+        buildConfig = true
     }
 
     compileOptions {
@@ -136,6 +136,6 @@ publishing {
 }
 
 signing {
-    required { isReleaseVersion && gradle.taskGraph.hasTask("publishToMavenLocal")}
+    required = { isReleaseVersion && gradle.taskGraph.hasTask("publishToMavenLocal")}
     sign publishing.publications.release
 }
