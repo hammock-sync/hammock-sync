@@ -43,7 +43,7 @@ android {
                 // java.lang.OutOfMemoryError: Failed to allocate a
                 // 8204 byte allocation with 4194304 free bytes and
                 // 8MB until OOM; failed due to fragmentation
-                // (required continguous free 12288 bytes where
+                // (required contiguous free 12288 bytes where
                 // largest contiguous free 8192 bytes)
                 exclude '**/KeyManagerTests*'
             }

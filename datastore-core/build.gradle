@@ -175,3 +175,17 @@ spotbugs {
 spotbugsTest {
     enabled = false
 }
+
+// Export test utilities
+configurations {
+    testUtilities.extendsFrom testImplementation
+}
+
+tasks.register('testUtilitiesJar',  Jar) {
+    archiveClassifier = 'test-utils'
+    from sourceSets.test.output
+}
+
+artifacts {
+    testUtilities testUtilitiesJar
+}
