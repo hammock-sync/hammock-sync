@@ -16,8 +16,8 @@
 
 package org.hammock.sync.internal.sqlite.sqlite4java;
 
-import com.almworks.sqlite4java.SQLiteConnection;
-import com.almworks.sqlite4java.SQLiteException;
+//import com.almworks.sqlite4java.SQLiteConnection;
+//import com.almworks.sqlite4java.SQLiteException;
 
 import org.hammock.sync.internal.android.ContentValues;
 import org.hammock.sync.internal.sqlite.Cursor;
@@ -31,6 +31,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 
@@ -39,7 +40,7 @@ public class SQLiteWrapperTest {
     private String database_dir ;
 
     // Single thread, single connection for now
-    private SQLiteConnection conn = null;
+    private Connection conn = null;
     private SQLiteWrapper database = null;
 
     private final static String doc_table_name = "docs";
@@ -69,7 +70,7 @@ public class SQLiteWrapperTest {
     }
 
     @Test
-    public void verify_config() throws SQLiteException {
+    public void verify_config() throws SQLException {
         Assert.assertTrue(conn.getAutoCommit());
     }
 

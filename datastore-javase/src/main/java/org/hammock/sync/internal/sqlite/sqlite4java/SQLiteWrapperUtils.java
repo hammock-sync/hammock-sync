@@ -16,23 +16,25 @@
 
 package org.hammock.sync.internal.sqlite.sqlite4java;
 
-import com.almworks.sqlite4java.SQLiteConnection;
-import com.almworks.sqlite4java.SQLiteConstants;
-import com.almworks.sqlite4java.SQLiteException;
-import com.almworks.sqlite4java.SQLiteStatement;
 import org.hammock.sync.internal.sqlite.Cursor;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class SQLiteWrapperUtils {
 
-    private static final String LOG_TAG = "SQLiteWrapperUtils";
     private static final Logger logger = Logger.getLogger(SQLiteWrapperUtils.class.getCanonicalName());
 
-    public static Long longForQuery(SQLiteConnection conn, String query)
-            throws SQLiteException {
+    public static Long longForQuery(Connection conn, String query)
+            throws SQLException {
         return SQLiteWrapperUtils.longForQuery(conn, query, null);
     }
 
@@ -40,21 +42,22 @@ public class SQLiteWrapperUtils {
      * Utility method to run the query on the db and return the value in the
      * first column of the first row.
      */
-    public static Long longForQuery(SQLiteConnection conn, String query, Object[] bindArgs)
-            throws SQLiteException {
-        SQLiteStatement stmt = null;
+    public static Long longForQuery(Connection conn, String query, Object[] bindArgs)
+            throws SQLException {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         try {
-            stmt = conn.prepare(query);
-            if (bindArgs != null && bindArgs.length > 0) {
-                stmt = SQLiteWrapperUtils.bindArguments(stmt, bindArgs);
-            }
-            if (stmt.step()) {
-                return stmt.columnLong(0);
+            stmt = conn.prepareStatement(query);
+            bindArguments(stmt, bindArgs);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getLong(1);
             } else {
                 throw new IllegalStateException("query failed to return any result: " + query);
             }
         } finally {
-            SQLiteWrapperUtils.disposeQuietly(stmt);
+            closeQuietly(rs);
+            closeQuietly(stmt);
         }
     }
 
@@ -62,166 +65,202 @@ public class SQLiteWrapperUtils {
      * Utility method to run the query on the db and return the value in the
      * first column of the first row.
      */
-    public static int intForQuery(SQLiteConnection conn, String query, Object[] bindArgs) throws SQLiteException {
-        SQLiteStatement stmt = null;
+    public static int intForQuery(Connection conn, String query, Object[] bindArgs) throws SQLException {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         try {
-            stmt = bindArguments(conn.prepare(query), bindArgs);
-            if (stmt.step()) {
-                return stmt.columnInt(0);
+            stmt = conn.prepareStatement(query);
+            bindArguments(stmt, bindArgs);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
             } else {
                 throw new IllegalStateException("query failed to return any result: " + query);
             }
         } finally {
-            SQLiteWrapperUtils.disposeQuietly(stmt);
+            closeQuietly(rs);
+            closeQuietly(stmt);
         }
     }
 
-    public static SQLiteStatement bindArguments(SQLiteStatement stmt, Object[] bindArgs)
-            throws SQLiteException {
-
-        if(bindArgs == null) {
-            bindArgs = new Object[]{};
+    public static void bindArguments(PreparedStatement stmt, Object[] bindArgs)
+            throws SQLException {
+        if (bindArgs == null) {
+            return;
         }
-
-        final int count = bindArgs.length;
-        if (count != stmt.getBindParameterCount()) {
-            throw new IllegalArgumentException(
-                    "Expected " + stmt.getBindParameterCount() + " bind arguments but "
-                            + bindArgs.length + " were provided.");
-        }
-        if (count == 0) {
-            return stmt;
-        }
-
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < bindArgs.length; i++) {
             final Object arg = bindArgs[i];
-            switch (DBUtils.getTypeOfObject(arg)) {
-                case Cursor.FIELD_TYPE_NULL:
-                    stmt.bindNull(i + 1);
-                    break;
-                case Cursor.FIELD_TYPE_INTEGER:
-                    stmt.bind(i + 1, ((Number) arg).longValue());
-                    break;
-                case Cursor.FIELD_TYPE_FLOAT:
-                    stmt.bind(i + 1, ((Number) arg).doubleValue());
-                    break;
-                case Cursor.FIELD_TYPE_BLOB:
-                    stmt.bind(i + 1, (byte[]) arg);
-                    break;
-                case Cursor.FIELD_TYPE_STRING:
-                default:
-                    if (arg instanceof Boolean) {
-                        // Provide compatibility with legacy applications which may pass
-                        // Boolean values in bind args.
-                        stmt.bind(i + 1, ((Boolean) arg).booleanValue() ? 1 : 0);
-                    } else {
-                        stmt.bind(i + 1, arg.toString());
-                    }
-                    break;
+            int j = i + 1;
+            if (arg == null) {
+                stmt.setNull(j, Types.NULL);
+            } else if (arg instanceof Long) {
+                stmt.setLong(j, (Long) arg);
+            } else if (arg instanceof Integer) {
+                stmt.setInt(j, (Integer) arg);
+            } else if (arg instanceof Double) {
+                stmt.setDouble(j, (Double) arg);
+            } else if (arg instanceof Float) {
+                stmt.setFloat(j, (Float) arg);
+            } else if (arg instanceof byte[]) {
+                stmt.setBytes(j, (byte[]) arg);
+            } else if (arg instanceof String) {
+                stmt.setString(j, (String) arg);
+            } else if (arg instanceof Boolean) {
+                stmt.setInt(j, ((Boolean) arg) ? 1 : 0);
+            } else {
+                stmt.setString(j, arg.toString());
             }
         }
-
-        return stmt;
     }
 
-    static void disposeQuietly(SQLiteStatement stmt) {
-        if (stmt != null && !stmt.isDisposed()) {
+    static void closeQuietly(Statement stmt) {
+        if (stmt != null) {
             try {
-                stmt.dispose();
-            } catch (Throwable e) {}
+                stmt.close();
+            } catch (SQLException e) {
+                // ignore
+            }
         }
     }
 
-    public static SQLiteCursor buildSQLiteCursor(SQLiteConnection conn, String sql, Object[] bindArgs)
-            throws SQLiteException {
-        SQLiteStatement stmt = null;
-        try {
-            stmt = bindArguments(conn.prepare(sql), bindArgs);
-            List<String> columnNames = null;
-            List<Tuple> resultSet = new ArrayList<Tuple>();
-            while (!stmt.hasStepped() || stmt.hasRow()) {
-                if (!stmt.step()) {
-                    break;
-                }
-                if (columnNames == null) {
-                    columnNames = getColumnNames(stmt);
-                }
+    static void closeQuietly(ResultSet rs) {
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                // ignore
+            }
+        }
+    }
 
-                Tuple t = getDataRow(stmt);
-                logger.finest("Tuple: "+ t.toString());
+    public static SQLiteCursor buildSQLiteCursor(Connection conn, String sql, Object[] bindArgs)
+            throws SQLException {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = conn.prepareStatement(sql);
+            bindArguments(stmt, bindArgs);
+            rs = stmt.executeQuery();
+            List<String> columnNames = getColumnNames(rs);
+            int columnCount = columnNames.size();
+            List<Tuple> resultSet = new ArrayList<Tuple>();
+            while (rs.next()) {
+                // Detect types per row, not per column (SQLite has dynamic typing)
+                List<Integer> columnTypes = getColumnTypesForRow(rs, columnCount);
+                Tuple t = getDataRow(rs, columnTypes);
+                logger.finest("Tuple: " + t.toString());
                 resultSet.add(t);
             }
             return new SQLiteCursor(columnNames, resultSet);
         } finally {
-            SQLiteWrapperUtils.disposeQuietly(stmt);
+            closeQuietly(rs);
+            closeQuietly(stmt);
         }
     }
 
-    static Tuple getDataRow(SQLiteStatement stmt) throws SQLiteException {
-        logger.entering("com.cloudant.sync.internal.sqlite.sqlite4java.SQLiteWrapperUtils","getDataRow",stmt);
-        Tuple result = new Tuple(getColumnTypes(stmt));
-        for (int i = 0; i < stmt.columnCount(); i++) {
-            Integer type = stmt.columnType(i);
-//            Log.v(LOG_TAG, "i: " + i + ", type: " + mapColumnType(type) + ", expected type: " + result.getType(i));
-            switch (type) {
-                case SQLiteConstants.SQLITE_NULL:
+    static Tuple getDataRow(ResultSet rs, List<Integer> columnTypes) throws SQLException {
+        logger.entering("org.hammock.sync.internal.sqlite.sqlite4java.SQLiteWrapperUtils", "getDataRow", rs);
+        Tuple result = new Tuple(columnTypes);
+        for (int i = 0; i < columnTypes.size(); i++) {
+            int colIdx = i + 1;
+            int cursorType = columnTypes.get(i);
+            switch (cursorType) {
+                case Cursor.FIELD_TYPE_NULL:
                     result.put(i);
                     break;
-                case SQLiteConstants.SQLITE_TEXT:
-                    result.put(i, stmt.columnString(i));
+                case Cursor.FIELD_TYPE_STRING:
+                    result.put(i, rs.getString(colIdx));
                     break;
-                case SQLiteConstants.SQLITE_INTEGER:
-                    result.put(i, stmt.columnLong(i));
+                case Cursor.FIELD_TYPE_INTEGER:
+                    result.put(i, rs.getLong(colIdx));
                     break;
-                case SQLiteConstants.SQLITE_FLOAT:
-                    result.put(i, Double.valueOf(stmt.columnDouble(i)).floatValue());
+                case Cursor.FIELD_TYPE_FLOAT:
+                    result.put(i, rs.getFloat(colIdx));
                     break;
-                case SQLiteConstants.SQLITE_BLOB:
-                    result.put(i, stmt.columnBlob(i));
+                case Cursor.FIELD_TYPE_BLOB:
+                    result.put(i, rs.getBytes(colIdx));
                     break;
                 default:
-                    throw new IllegalArgumentException("Unsupported data type: " + type);
+                    throw new IllegalArgumentException("Unsupported data type: " + cursorType);
             }
         }
         return result;
     }
 
-    static List<String> getColumnNames(SQLiteStatement stmt) throws SQLiteException {
-//        Log.v(LOG_TAG, "getColumnNames()");
+    static List<String> getColumnNames(ResultSet rs) throws SQLException {
         List<String> columnNames = new ArrayList<String>();
-        int columnCount = stmt.columnCount();
-        for (int i = 0; i < columnCount; i++) {
-            columnNames.add(i, stmt.getColumnName(i));
+        ResultSetMetaData metaData = rs.getMetaData();
+        int columnCount = metaData.getColumnCount();
+        for (int i = 1; i <= columnCount; i++) {
+            columnNames.add(metaData.getColumnName(i));
         }
-//        Log.v(LOG_TAG, "columnNames:" + columnNames);
         return columnNames;
     }
 
-    static List<Integer> getColumnTypes(SQLiteStatement stmt) throws SQLiteException {
-//        Log.v(LOG_TAG, "getColumnTypes()");
+    static List<Integer> getColumnTypes(ResultSet rs) throws SQLException {
         List<Integer> columnTypes = new ArrayList<Integer>();
-        int columnCount = stmt.columnCount();
-        for (int i = 0; i < columnCount; i++) {
-            columnTypes.add(i, mapColumnType(stmt.columnType(i)));
+        ResultSetMetaData metaData = rs.getMetaData();
+        int columnCount = metaData.getColumnCount();
+        for (int i = 1; i <= columnCount; i++) {
+            columnTypes.add(mapColumnType(metaData.getColumnType(i)));
         }
-//        Log.v(LOG_TAG, "columnTypes:" + columnTypes);
+        return columnTypes;
+    }
+
+    /**
+     * Get the actual column types for the current row.
+     * SQLite has dynamic typing, so we need to check the actual value type for each column.
+     */
+    static List<Integer> getColumnTypesForRow(ResultSet rs, int columnCount) throws SQLException {
+        List<Integer> columnTypes = new ArrayList<Integer>();
+        for (int i = 1; i <= columnCount; i++) {
+            Object value = rs.getObject(i);
+            if (value == null) {
+                columnTypes.add(Cursor.FIELD_TYPE_NULL);
+            } else if (value instanceof String) {
+                columnTypes.add(Cursor.FIELD_TYPE_STRING);
+            } else if (value instanceof Long || value instanceof Integer ||
+                       value instanceof Short || value instanceof Byte ||
+                       value instanceof Boolean) {
+                columnTypes.add(Cursor.FIELD_TYPE_INTEGER);
+            } else if (value instanceof Double || value instanceof Float) {
+                columnTypes.add(Cursor.FIELD_TYPE_FLOAT);
+            } else if (value instanceof byte[]) {
+                columnTypes.add(Cursor.FIELD_TYPE_BLOB);
+            } else {
+                // Default to string for unknown types
+                columnTypes.add(Cursor.FIELD_TYPE_STRING);
+            }
+        }
         return columnTypes;
     }
 
     static int mapColumnType(int columnType) {
         switch (columnType) {
-            case SQLiteConstants.SQLITE_NULL:
+            case Types.NULL:
                 return Cursor.FIELD_TYPE_NULL;
-            case SQLiteConstants.SQLITE_TEXT:
+            case Types.VARCHAR:
+            case Types.CHAR:
+            case Types.LONGVARCHAR:
                 return Cursor.FIELD_TYPE_STRING;
-            case SQLiteConstants.SQLITE_INTEGER:
+            case Types.INTEGER:
+            case Types.NUMERIC:
+            case Types.BIGINT:
+            case Types.SMALLINT:
+            case Types.TINYINT:
+            case Types.BOOLEAN:
                 return Cursor.FIELD_TYPE_INTEGER;
-            case SQLiteConstants.SQLITE_FLOAT:
+            case Types.REAL:
+            case Types.FLOAT:
+            case Types.DOUBLE:
                 return Cursor.FIELD_TYPE_FLOAT;
-            case SQLiteConstants.SQLITE_BLOB:
+            case Types.BLOB:
+            case Types.BINARY:
+            case Types.VARBINARY:
+            case Types.LONGVARBINARY:
                 return Cursor.FIELD_TYPE_BLOB;
             default:
-                throw new IllegalArgumentException("Unsupported data type? :" + columnType);
+                throw new IllegalArgumentException("Unsupported data type from database: " + columnType);
         }
     }
 }

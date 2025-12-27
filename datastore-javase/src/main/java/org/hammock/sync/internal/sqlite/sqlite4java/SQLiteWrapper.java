@@ -14,15 +14,15 @@
 
 package org.hammock.sync.internal.sqlite.sqlite4java;
 
-import com.almworks.sqlite4java.SQLiteConnection;
-import com.almworks.sqlite4java.SQLiteException;
-import com.almworks.sqlite4java.SQLiteStatement;
 import org.hammock.sync.internal.android.ContentValues;
 import org.hammock.sync.internal.sqlite.SQLDatabase;
 import org.hammock.sync.internal.util.Misc;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Stack;
 import java.util.logging.Level;
@@ -34,7 +34,6 @@ import java.util.logging.Logger;
  */
 public class SQLiteWrapper extends SQLDatabase {
 
-    private final static String LOG_TAG = "SQLiteWrapper";
     private static final Logger logger = Logger.getLogger(SQLiteWrapper.class.getCanonicalName());
 
     private static final String[] CONFLICT_VALUES = new String[]
@@ -42,7 +41,7 @@ public class SQLiteWrapper extends SQLDatabase {
 
     private final File databaseFile;
 
-    private SQLiteConnection localConnection;
+    private Connection localConnection;
 
     /**
      * Tracks whether the current nested set of transactions has had any
@@ -56,7 +55,7 @@ public class SQLiteWrapper extends SQLDatabase {
      * When complete, the status is popped and used to update
      * {@see SQLiteWrapper#transactionNestedSetSuccess}
      */
-    private Stack<Boolean> transactionStack = new Stack<Boolean>();
+    private final Stack<Boolean> transactionStack = new Stack<>();
 
     public SQLiteWrapper(File databaseFile) {
         this.databaseFile = databaseFile;
@@ -68,7 +67,7 @@ public class SQLiteWrapper extends SQLDatabase {
         return db;
     }
 
-    public SQLiteConnection getConnection() {
+    public Connection getConnection() {
         if (localConnection == null) {
             localConnection = createNewConnection();
         }
@@ -76,19 +75,20 @@ public class SQLiteWrapper extends SQLDatabase {
         return localConnection;
     }
 
-    public SQLiteConnection createNewConnection() {
+    public Connection createNewConnection() {
         try {
-            SQLiteConnection conn;
+            Connection conn;
             if (this.databaseFile != null) {
-                conn = new SQLiteConnection(this.databaseFile);
+               conn = DriverManager.getConnection("jdbc:sqlite:" + this.databaseFile.getAbsolutePath());
+                //conn = new Connection(this.databaseFile);
+
             } else {
-                conn = new SQLiteConnection();
+                // conn = new Connection();
+                conn = DriverManager.getConnection("jdbc:sqlite:");
             }
-            // open with "open or create" flag
-            conn.open(true);
-            conn.setBusyTimeout(30*1000);
+
             return conn;
-        } catch (SQLiteException ex) {
+        } catch (SQLException ex) {
             throw new IllegalStateException("Failed to open database.", ex);
         }
     }
@@ -111,14 +111,18 @@ public class SQLiteWrapper extends SQLDatabase {
     public int getVersion() {
         try {
             return SQLiteWrapperUtils.longForQuery(getConnection(), "PRAGMA user_version;").intValue();
-        } catch (SQLiteException e) {
-            throw new IllegalStateException("Can not query for the user_version?");
+        } catch (SQLException e) {
+            throw new IllegalStateException("Can not query for the user_version?", e);
         }
     }
 
     @Override
     public boolean isOpen() {
-        return getConnection().isOpen();
+        try {
+            return getConnection().isValid(500);
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     @Override
@@ -129,7 +133,7 @@ public class SQLiteWrapper extends SQLDatabase {
         // so we don't have to lock.
 
         // Start new set of nested transactions
-        if(this.transactionStack.size() == 0) {
+        if(this.transactionStack.isEmpty()) {
             try {
                 this.execSQL("BEGIN EXCLUSIVE;");
             } catch (SQLException e) {
@@ -152,7 +156,7 @@ public class SQLiteWrapper extends SQLDatabase {
     @Override
     public void endTransaction() {
         Misc.checkState(this.isOpen(), "db must be open");
-        Misc.checkState(this.transactionStack.size() >= 1,
+        Misc.checkState(!this.transactionStack.isEmpty(),
                 "TransactionStatus stack must not be empty");
 
         // All transaction state variables are thread-local,
@@ -163,7 +167,7 @@ public class SQLiteWrapper extends SQLDatabase {
             transactionNestedSetSuccess =false;
         }
 
-        if(this.transactionStack.size() == 0) {
+        if(this.transactionStack.isEmpty()) {
             // We've reached the top of the stack, and need to commit or
             // rollback. At this point transactionNestedSetSuccess will be true
             // iff no transactions in the set failed.
@@ -200,35 +204,34 @@ public class SQLiteWrapper extends SQLDatabase {
         // it's not possible to call dispose from other threads
         // so the best we can do is call dispose on the connection
         // for the same thread as us
-        SQLiteConnection conn = localConnection;
-        if (conn != null && !conn.isDisposed()) {
-            conn.dispose();
+        Connection conn = localConnection;
+        try {
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            // Silent close
         }
     }
 
     @Override
     public void execSQL(String sql) throws SQLException {
         Misc.checkNotNullOrEmpty(sql.trim(), "Input SQL");
-        try {
-            getConnection().exec(sql);
-        } catch (SQLiteException e) {
-            throw new SQLException(e);
+        try (Statement stmt = this.getConnection().createStatement() ) {
+            stmt.execute(sql);
         }
     }
 
     @Override
     public void execSQL(String sql, Object[] bindArgs) throws SQLException {
         Misc.checkNotNullOrEmpty(sql.trim(), "Input SQL");
-        SQLiteStatement stmt = null;
+        java.sql.PreparedStatement stmt = null;
         try {
-            stmt = this.getConnection().prepare(sql);
-            stmt = SQLiteWrapperUtils.bindArguments(stmt, bindArgs);
-            while (stmt.step()) {
-            }
-        } catch (SQLiteException e) {
-            throw new SQLException(e);
+            stmt = this.getConnection().prepareStatement(sql);
+            SQLiteWrapperUtils.bindArguments(stmt, bindArgs);
+            stmt.execute();
         } finally {
-            SQLiteWrapperUtils.disposeQuietly(stmt);
+            SQLiteWrapperUtils.closeQuietly(stmt);
         }
     }
 
@@ -241,9 +244,8 @@ public class SQLiteWrapper extends SQLDatabase {
         try {
             String updateQuery = QueryBuilder.buildUpdateQuery(table, values, whereClause, whereArgs);
             Object[] bindArgs = QueryBuilder.buildBindArguments(values, whereArgs);
-            this.executeSQLStatement(updateQuery, bindArgs);
-            return getConnection().getChanges();
-        } catch (SQLiteException e) {
+            return this.executeSQLStatementWithCount(updateQuery, bindArgs);
+        } catch (SQLException e) {
             logger.log(Level.SEVERE, String.format("Error updating: %s, %s, %s, %s", table,
                     values, whereClause, Arrays.toString(whereArgs)), e);
             return -1;
@@ -252,25 +254,18 @@ public class SQLiteWrapper extends SQLDatabase {
 
     @Override
     public SQLiteCursor rawQuery(String sql, String[] bindArgs) throws SQLException {
-        try {
-            return SQLiteWrapperUtils.buildSQLiteCursor(getConnection(), sql, bindArgs);
-        } catch (SQLiteException e) {
-            throw new SQLException(e);
-        }
+        return SQLiteWrapperUtils.buildSQLiteCursor(getConnection(), sql, bindArgs);
     }
 
     @Override
     public int delete(String table, String whereClause, String[] whereArgs) {
         try {
-            String sql = new StringBuilder("DELETE FROM \"")
-                    .append(table)
-                    .append("\"")
-                    .append(!Misc.isStringNullOrEmpty(whereClause) ? " WHERE " +
-                            whereClause : "")
-                    .toString();
-            this.executeSQLStatement(sql, whereArgs);
-            return getConnection().getChanges();
-        } catch (SQLiteException e) {
+            String sql = "DELETE FROM \"" +
+                    table +
+                    "\"" +
+                    (!Misc.isStringNullOrEmpty(whereClause) ? " WHERE " + whereClause : "");
+            return this.executeSQLStatementWithCount(sql, whereArgs);
+        } catch (SQLException e) {
             return 0;
         }
     }
@@ -284,6 +279,8 @@ public class SQLiteWrapper extends SQLDatabase {
             throw new IllegalArgumentException("SQLite does not support to insert an all null row");
         }
 
+        java.sql.PreparedStatement stmt = null;
+        java.sql.ResultSet rs = null;
         try {
             StringBuilder sql = new StringBuilder();
             sql.append("INSERT ");
@@ -308,12 +305,24 @@ public class SQLiteWrapper extends SQLDatabase {
             }
 
             sql.append(')');
-            this.executeSQLStatement(sql.toString(), bindArgs);
-            return getConnection().getLastInsertId();
-        } catch (SQLiteException e) {
+
+            stmt = getConnection().prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+            SQLiteWrapperUtils.bindArguments(stmt, bindArgs);
+            stmt.executeUpdate();
+
+            rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getLong(1);
+            } else {
+                return -1;
+            }
+        } catch (SQLException e) {
             logger.log(Level.SEVERE, String.format("Error inserting to: %s, %s, %s", table,
                     initialValues, CONFLICT_VALUES[conflictAlgorithm]), e);
             return -1;
+        } finally {
+            SQLiteWrapperUtils.closeQuietly(rs);
+            SQLiteWrapperUtils.closeQuietly(stmt);
         }
     }
 
@@ -322,10 +331,14 @@ public class SQLiteWrapper extends SQLDatabase {
         return insertWithOnConflict(table, initialValues, CONFLICT_NONE);
     }
 
-    private void executeSQLStatement(String sql, Object[] values) throws SQLiteException{
-        SQLiteStatement stmt = getConnection().prepare(sql);
-        stmt = SQLiteWrapperUtils.bindArguments(stmt, values);
-        while (stmt.step()) {
+    private int executeSQLStatementWithCount(String sql, Object[] values) throws SQLException {
+        java.sql.PreparedStatement stmt = null;
+        try {
+            stmt = getConnection().prepareStatement(sql);
+            SQLiteWrapperUtils.bindArguments(stmt, values);
+            return stmt.executeUpdate();
+        } finally {
+            SQLiteWrapperUtils.closeQuietly(stmt);
         }
     }
 }

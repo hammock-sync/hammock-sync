@@ -28,7 +28,11 @@ public class Tuple {
 
     public Tuple(List<Integer> desc) {
         this.desc = desc;
-        this.values = new ArrayList<Object>(desc.size());
+        this.values = new ArrayList<>(desc.size());
+        // Initialize the list with nulls to allow set() operations
+        for (int i = 0; i < desc.size(); i++) {
+            this.values.add(null);
+        }
     }
 
     @Override
@@ -48,17 +52,22 @@ public class Tuple {
     }
 
     public void put(int index) {
-        if(desc.get(index) != Cursor.FIELD_TYPE_NULL) {
+       /* if(desc.get(index) != Cursor.FIELD_TYPE_NULL) {
             throw new IllegalArgumentException("Inserting a null, but expecting " + getTypeName(desc.get(index)));
         }
-        this.values.add(index, null);
+        */
+
+        // Force type to null if null value is set
+        desc.set(index, Cursor.FIELD_TYPE_NULL);
+
+        this.values.set(index, null);
     }
 
     public void put(int index, String value) {
         if(desc.get(index) != Cursor.FIELD_TYPE_STRING) {
             throw new IllegalArgumentException("Inserting a string, but expecting " + getTypeName(desc.get(index)));
         }
-        this.values.add(index, value);
+        this.values.set(index, value);
     }
 
     // Internally we always store the SQLite number as long
@@ -66,21 +75,21 @@ public class Tuple {
         if(desc.get(index) != Cursor.FIELD_TYPE_INTEGER) {
             throw new IllegalArgumentException("Inserting an integer, but expecting " + getTypeName(desc.get(index)));
         }
-        this.values.add(index, value);
+        this.values.set(index, value);
     }
 
     public void put(int index, float value) {
         if(desc.get(index) != Cursor.FIELD_TYPE_FLOAT) {
             throw new IllegalArgumentException("Inserting a float, but expecting " + getTypeName(desc.get(index)));
         }
-        this.values.add(index, value);
+        this.values.set(index, value);
     }
 
     public void put(int index, byte[] value) {
         if(desc.get(index) != Cursor.FIELD_TYPE_BLOB) {
             throw new IllegalArgumentException("Inserting a blob, but expecting " + getTypeName(desc.get(index)));
         }
-        this.values.add(index, value);
+        this.values.set(index, value);
     }
 
     public Long getLong(int i) {
@@ -126,4 +135,5 @@ public class Tuple {
         }
         throw new IllegalArgumentException("Unsupported type: " + i);
     }
+
 }
