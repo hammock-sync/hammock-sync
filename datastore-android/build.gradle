@@ -6,14 +6,16 @@ def testConfig = convertTestSysPropsToHash()
 
 android {
     namespace 'org.hammock.sync'
-    compileSdk 33
+    compileSdk 34
     defaultConfig {
         minSdk 29
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        targetSdk 34
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String[][]", "TEST_CONFIG", testConfig
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     compileOptions {
