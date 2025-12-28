@@ -41,4 +41,4 @@ jobs:
       with:
         couchdb version: ${{ matrix.couchdb }}
     - name: Test
-      run: ./gradlew integrationTest --no-daemon -Dtest.with.specified.couch=true -Dtest.couch.username=$COUCHDB_USER -Dtest.couch.password=$COUCHDB_PASSWORD -Dtest.couch.url=http://localhost:5984
+      run: ./gradlew integrationTest --no-daemon -Dtest.with.specified.couch=true -Dtest.couch.username=$COUCHDB_USER -Dtest.couch.password=$COUCHDB_PASSWORD -Dtest.couch.uri=http://localhost:5984

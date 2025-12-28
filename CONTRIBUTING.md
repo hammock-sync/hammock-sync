@@ -93,7 +93,7 @@ environment variable to be set
 
 The minimum requirements for an Android emulator:
 
-* Minimum API Level 29 (Target API Level is 33)
+* Minimum API Level 29 (Target API Level is 36)
 * An SD card
 
 The tests can be run like any other Android application test suite, through
