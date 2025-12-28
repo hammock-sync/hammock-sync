@@ -110,19 +110,9 @@ class KeyManager {
             byte[] dpkBytes = DPKEncryptionUtil.decryptAES(aesKey, data.getIv(), data
                     .getEncryptedDPK());
             dpk = new EncryptionKey(dpkBytes);
-        } catch (NoSuchAlgorithmException e) {
-            throw new DPKException("Failed to decrypt DPK", e);
-        } catch (InvalidKeySpecException e) {
-            throw new DPKException("Failed to decrypt DPK", e);
-        } catch (IllegalBlockSizeException e) {
-            throw new DPKException("Failed to decrypt DPK", e);
-        } catch (InvalidKeyException e) {
-            throw new DPKException("Failed to decrypt DPK", e);
-        } catch (BadPaddingException e) {
-            throw new DPKException("Failed to decrypt DPK", e);
-        } catch (InvalidAlgorithmParameterException e) {
-            throw new DPKException("Failed to decrypt DPK", e);
-        } catch (NoSuchPaddingException e) {
+        } catch (NoSuchAlgorithmException | IllegalArgumentException | InvalidKeySpecException |
+                 IllegalBlockSizeException | InvalidKeyException | BadPaddingException |
+                 InvalidAlgorithmParameterException | NoSuchPaddingException e) {
             throw new DPKException("Failed to decrypt DPK", e);
         }
 
