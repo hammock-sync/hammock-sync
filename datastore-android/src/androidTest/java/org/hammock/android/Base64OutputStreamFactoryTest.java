@@ -25,7 +25,7 @@ import java.io.OutputStream;
 /**
  * Created by Rhys Short on 12/06/15.
  */
-public class Base64OutputStreamFactoryTest extends Object {
+public class Base64OutputStreamFactoryTest {
 
     private final String password="k8b:2KcU2re:BSTeyYg:4hUsu+zWgg#85+!22VUuf:22@2ESzQKZwwv+:/S3Qd79";
 
@@ -34,6 +34,7 @@ public class Base64OutputStreamFactoryTest extends Object {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         OutputStream outputStream = Base64OutputStreamFactory.get(byteArrayOutputStream);
+        Assert.assertNotNull(outputStream);
         outputStream.write(password.getBytes());
         Assert.assertFalse(byteArrayOutputStream.toString().contains("\n"));
     }
