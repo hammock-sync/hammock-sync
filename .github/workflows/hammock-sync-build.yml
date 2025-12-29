@@ -70,7 +70,7 @@ jobs:
         with:
           couchdb version: ${{ matrix.couchdb }}
       - name: Test with coverage
-        run: ./gradlew integrationTest jacocoTestReport --no-daemon -Dtest.with.specified.couch=true -Dtest.couch.username=$COUCHDB_USER -Dtest.couch.password=$COUCHDB_PASSWORD -Dtest.couch.uri=http://localhost:5984
+        run: ./gradlew integrationTest --no-daemon -Dtest.with.specified.couch=true -Dtest.couch.username=$COUCHDB_USER -Dtest.couch.password=$COUCHDB_PASSWORD -Dtest.couch.uri=http://localhost:5984
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4

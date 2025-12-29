@@ -69,8 +69,6 @@ tasks.withType(Test).configureEach {
         showCauses = true
         showStackTraces = true
     }
-    // Enable JaCoCo for test coverage
-    finalizedBy jacocoTestReport
 }
 
 // JaCoCo configuration
@@ -81,6 +79,10 @@ jacocoTestReport {
         html.required = true
         csv.required = false
     }
+}
+
+test {
+    finalizedBy jacocoTestReport
 }
 
 publishing {

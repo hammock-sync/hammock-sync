@@ -86,8 +86,6 @@ tasks.withType(Test).configureEach {
         showCauses = true
         showStackTraces = true
     }
-    // Enable JaCoCo for test coverage
-    finalizedBy jacocoTestReport
 }
 
 test {
@@ -96,6 +94,7 @@ test {
          'org.hammock.common.RequireRunningCouchDB',  \
          'org.hammock.common.RequireRunningProxy'
     }
+    finalizedBy jacocoTestReport
 }
 
 // JaCoCo configuration
@@ -113,6 +112,7 @@ tasks.register('integrationTest', Test) {
     useJUnit {
         excludeCategories 'org.hammock.common.RequireRunningProxy'
     }
+    finalizedBy jacocoTestReport
 }
 
 tasks.register('unreliableNetworkTest', Test) {
