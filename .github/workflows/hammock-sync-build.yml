@@ -3,7 +3,10 @@ name: Hammock Sync CI - Build
 on:
   pull_request:
     branches: [ main ]
-env: 
+  push:
+    branches: [ main ]
+
+env:
   COUCHDB_USER: "admin"
   COUCHDB_PASSWORD: "password"
 
@@ -12,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for better analysis with SonarCloud
       - name: set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -40,6 +45,8 @@ jobs:
       max-parallel: 1
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for better analysis with SonarCloud
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -62,8 +69,60 @@ jobs:
         #uses: "cobot/couchdb-action@master"
         with:
           couchdb version: ${{ matrix.couchdb }}
-      - name: Test
-        run: ./gradlew integrationTest --no-daemon -Dtest.with.specified.couch=true -Dtest.couch.username=$COUCHDB_USER -Dtest.couch.password=$COUCHDB_PASSWORD -Dtest.couch.uri=http://localhost:5984
+      - name: Test with coverage
+        run: ./gradlew integrationTest jacocoTestReport --no-daemon -Dtest.with.specified.couch=true -Dtest.couch.username=$COUCHDB_USER -Dtest.couch.password=$COUCHDB_PASSWORD -Dtest.couch.uri=http://localhost:5984
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports-${{ matrix.couchdb }}
+          path: |
+            */build/reports/
+            */build/test-results/
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports-${{ matrix.couchdb }}
+          path: |
+            */build/reports/jacoco/
+
+  sonarcloud:
+    name: SonarCloud Analysis
+    runs-on: ubuntu-latest
+    needs: [test, android-test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for better analysis
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+      - name: Download coverage reports (Java)
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-reports-3.5.1  # Use coverage from latest CouchDB version
+      - name: Download coverage reports (Android)
+        uses: actions/download-artifact@v4
+        with:
+          name: android-coverage-reports
+      - name: set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Generate aggregated coverage report
+        run: ./gradlew jacocoAggregatedReport --no-daemon
+      - name: SonarCloud Scan
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew sonar --no-daemon
+
   android-test:
     runs-on: ubuntu-latest
     needs: build
@@ -115,7 +174,7 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
-      - name: Run Android instrumentation tests
+      - name: Run Android instrumentation tests with coverage
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 36
@@ -124,7 +183,9 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: ./gradlew connectedCheck --no-daemon -Dtest.with.specified.couch=true -Dtest.couch.username=$COUCHDB_USER -Dtest.couch.password=$COUCHDB_PASSWORD -Dtest.couch.uri=http://10.0.2.2:5984
+          script: ./gradlew connectedDebugAndroidTest --no-daemon -Dtest.with.specified.couch=true -Dtest.couch.username=$COUCHDB_USER -Dtest.couch.password=$COUCHDB_PASSWORD -Dtest.couch.uri=http://10.0.2.2:5984
+      - name: Generate Android coverage reports
+        run: ./gradlew :datastore-android:jacocoTestReport :datastore-android-encryption:jacocoTestReport --no-daemon
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -133,3 +194,10 @@ jobs:
           path: |
             datastore-android/build/reports/
             datastore-android-encryption/build/reports/
+      - name: Upload Android coverage reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-coverage-reports
+          path: |
+            datastore-android/build/reports/jacoco/
+            datastore-android-encryption/build/reports/jacoco/

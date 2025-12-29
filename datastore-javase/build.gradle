@@ -4,6 +4,7 @@ apply plugin: 'java'
 apply plugin: 'maven-publish'
 apply plugin: 'com.github.spotbugs'
 apply plugin: 'signing'
+apply plugin: 'jacoco'
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
@@ -67,6 +68,18 @@ tasks.withType(Test).configureEach {
         showExceptions = true
         showCauses = true
         showStackTraces = true
+    }
+    // Enable JaCoCo for test coverage
+    finalizedBy jacocoTestReport
+}
+
+// JaCoCo configuration
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
     }
 }
 
