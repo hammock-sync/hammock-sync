@@ -35,14 +35,11 @@ sonar {
         property "sonar.java.coveragePlugin", "jacoco"
         property "sonar.junit.reportPaths", "${rootDir}/datastore-core/build/test-results/test,${rootDir}/datastore-javase/build/test-results/test"
         property "sonar.androidLint.reportPaths", "${rootDir}/datastore-android/build/reports/lint-results.xml,${rootDir}/datastore-android-encryption/build/reports/lint-results.xml"
-        property "sonar.sources", "datastore-core/src/main/java,datastore-javase/src/main/java,datastore-android/src/main/java,datastore-android-encryption/src/main/java"
-        property "sonar.tests", "datastore-core/src/test/java,datastore-javase/src/test/java,datastore-android/src/androidTest/java,datastore-android-encryption/src/androidTest/java"
     }
 }
 
 // Aggregated JaCoCo report task
 tasks.register('jacocoAggregatedReport', JacocoReport) {
-    dependsOn ':datastore-core:test', ':datastore-javase:test'
 
     additionalSourceDirs.from = files(
         project(':datastore-core').sourceSets.main.allSource.srcDirs,
