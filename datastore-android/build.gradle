@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
+apply plugin: 'jacoco'
 
 def testConfig = convertTestSysPropsToHash()
 
@@ -16,6 +17,12 @@ android {
 
     buildFeatures {
         buildConfig = true
+    }
+
+    buildTypes {
+        debug {
+            testCoverageEnabled = true
+        }
     }
 
     compileOptions {
@@ -93,6 +100,27 @@ tasks.register('copyFixtures', Copy) {
     into 'src/androidTest/resources/fixture'
 }
 preBuild.dependsOn copyFixtures
+
+// JaCoCo task to generate coverage report from Android instrumentation tests
+tasks.register('jacocoTestReport', JacocoReport) {
+    dependsOn 'connectedDebugAndroidTest'
+
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def debugTree = fileTree(dir: "${layout.buildDirectory.get().asFile}/intermediates/javac/debug/classes", excludes: fileFilter)
+    def mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories.from = files([mainSrc])
+    classDirectories.from = files([debugTree])
+    executionData.from = fileTree(dir: layout.buildDirectory.get().asFile, includes: [
+        'outputs/code_coverage/debugAndroidTest/connected/**/*.ec'
+    ])
+}
 
 static def convertTestSysPropsToHash (){
     return "{" +

@@ -1,5 +1,10 @@
 # Hammock Sync Android
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hammock-sync_hammock-sync&metric=alert_status)](https://sonarcloud.io/dashboard?id=hammock-sync_hammock-sync)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=hammock-sync_hammock-sync&metric=coverage)](https://sonarcloud.io/dashboard?id=hammock-sync_hammock-sync)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=hammock-sync_hammock-sync&metric=bugs)](https://sonarcloud.io/dashboard?id=hammock-sync_hammock-sync)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=hammock-sync_hammock-sync&metric=code_smells)](https://sonarcloud.io/dashboard?id=hammock-sync_hammock-sync)
+
 **A CouchDB Sync Client for Android**
 
 ## Overview
@@ -71,6 +76,58 @@ Select the one that best suits your project type:
 ## Usage
 
 Please check sample project for usage.
+
+## Testing & Code Coverage
+
+Hammock Sync uses JaCoCo for code coverage reporting and SonarCloud for continuous quality analysis.
+
+### Running Tests Locally
+
+Use the provided `coverage.sh` script for easy testing:
+
+```bash
+# Run unit tests with coverage
+./coverage.sh unit
+
+# Run integration tests with coverage (requires CouchDB running)
+./coverage.sh integration
+
+# Run Android instrumentation tests (requires emulator/device)
+./coverage.sh android
+
+# Generate aggregated coverage report
+./coverage.sh aggregated
+
+# Open coverage reports in browser
+./coverage.sh open
+
+# Run all unit tests and generate reports
+./coverage.sh all
+```
+
+Or use Gradle directly:
+
+```bash
+# Unit tests
+./gradlew test jacocoTestReport
+
+# Integration tests (requires CouchDB at localhost:5984)
+./gradlew integrationTest jacocoTestReport
+
+# Android tests (requires emulator/device)
+./gradlew connectedDebugAndroidTest
+./gradlew :datastore-android:jacocoTestReport
+
+# Aggregated report
+./gradlew jacocoAggregatedReport
+```
+
+### SonarCloud Analysis
+
+Code quality and coverage are automatically analyzed on every push to `main` branch. View the results at:
+https://sonarcloud.io/dashboard?id=hammock-sync_hammock-sync
+
+For more details, see [doc/coverage-sonarcloud.md](doc/coverage-sonarcloud.md)
 
 ## Contributing
 

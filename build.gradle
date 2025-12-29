@@ -3,6 +3,8 @@ plugins {
     id 'com.android.library' version '8.13.2' apply false
     id "com.github.spotbugs" version '6.4.8' apply false
     id 'androidx.navigation.safeargs' version '2.9.6' apply false
+    id 'jacoco'
+    id "org.sonarqube" version "7.2.2.6593"
 }
 
 repositories {
@@ -18,3 +20,50 @@ allprojects {
     ext.isReleaseVersion = !version.toUpperCase(Locale.ENGLISH).contains("SNAPSHOT")
 }
 
+// JaCoCo configuration
+jacoco {
+    toolVersion = "0.8.12"
+}
+
+// SonarQube configuration
+sonar {
+    properties {
+        property "sonar.projectKey", "hammock-sync_hammock-sync"
+        property "sonar.organization", "hammock-sync"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${rootDir}/build/reports/jacoco/jacocoAggregatedReport/jacocoAggregatedReport.xml"
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.junit.reportPaths", "${rootDir}/datastore-core/build/test-results/test,${rootDir}/datastore-javase/build/test-results/test"
+        property "sonar.androidLint.reportPaths", "${rootDir}/datastore-android/build/reports/lint-results.xml,${rootDir}/datastore-android-encryption/build/reports/lint-results.xml"
+        property "sonar.exclusions", "sample/**"
+    }
+}
+
+// Aggregated JaCoCo report task
+tasks.register('jacocoAggregatedReport', JacocoReport) {
+
+    additionalSourceDirs.from = files(
+        project(':datastore-core').sourceSets.main.allSource.srcDirs,
+        project(':datastore-javase').sourceSets.main.allSource.srcDirs
+    )
+    sourceDirectories.from = files(
+        project(':datastore-core').sourceSets.main.allSource.srcDirs,
+        project(':datastore-javase').sourceSets.main.allSource.srcDirs
+    )
+    classDirectories.from = files(
+        project(':datastore-core').sourceSets.main.output,
+        project(':datastore-javase').sourceSets.main.output
+    )
+    executionData.from = files(
+        project(':datastore-core').tasks.test.extensions.getByType(JacocoTaskExtension).destinationFile,
+        project(':datastore-javase').tasks.test.extensions.getByType(JacocoTaskExtension).destinationFile
+    )
+
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+        xml.outputLocation = file("${layout.buildDirectory.get().asFile}/reports/jacoco/jacocoAggregatedReport/jacocoAggregatedReport.xml")
+        html.outputLocation = file("${layout.buildDirectory.get().asFile}/reports/jacoco/jacocoAggregatedReport/html")
+    }
+}
