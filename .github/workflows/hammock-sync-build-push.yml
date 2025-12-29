@@ -1,6 +1,9 @@
 name: Hammock Sync CI - Build - Single Test
 
-on: push
+on:
+  push:
+    branches:
+      - main
 
 env: 
   COUCHDB_USER: "admin"

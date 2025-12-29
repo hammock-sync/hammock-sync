@@ -35,6 +35,7 @@ sonar {
         property "sonar.java.coveragePlugin", "jacoco"
         property "sonar.junit.reportPaths", "${rootDir}/datastore-core/build/test-results/test,${rootDir}/datastore-javase/build/test-results/test"
         property "sonar.androidLint.reportPaths", "${rootDir}/datastore-android/build/reports/lint-results.xml,${rootDir}/datastore-android-encryption/build/reports/lint-results.xml"
+        property "sonar.exclusions", "sample/**"
     }
 }
 
