@@ -100,7 +100,7 @@ publishing {
 }
 
 signing {
-    required = { !isReleaseVersion && gradle.taskGraph.hasTask("publishToMavenLocal")}
+    required = { isReleaseVersion && gradle.taskGraph.hasTask("publishToMavenLocal")}
     sign publishing.publications.mavenJava
 }
 
