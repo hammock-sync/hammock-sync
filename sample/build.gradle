@@ -32,12 +32,12 @@ android {
 dependencies {
 
     implementation project(':datastore-android')
-    implementation 'androidx.appcompat:appcompat:1.7.1'
-    implementation 'androidx.preference:preference:1.2.1'
-    implementation 'androidx.navigation:navigation-fragment:2.9.6'
-    implementation 'androidx.navigation:navigation-ui:2.9.6'
+    implementation libs.appcompat
+    implementation libs.preference
+    implementation libs.navigationFragment
+    implementation libs.navigationUi
 
-    implementation 'com.google.android.material:material:1.13.0'
+    implementation libs.material
 }
 
 repositories {

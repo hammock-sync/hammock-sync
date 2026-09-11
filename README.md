@@ -76,6 +76,18 @@ Please check sample project for usage.
 
 We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to get started.
 
+## Supported build and platform versions
+
+| Component | Supported version |
+| --- | --- |
+| Android | API 29 and newer |
+| Java SE bytecode | Java 8 |
+| Android Java compatibility | Java 11 |
+| Gradle | 8.14.3 |
+| Android Gradle Plugin | 8.13.2 |
+| Compile/target SDK | 36 |
+| CouchDB | CouchDB replication protocol-compatible servers |
+
 ## License
 
 Hammock Sync is released under the MIT License. See the [LICENSE](LICENSE) file for more details.
