@@ -4,9 +4,9 @@
 
 ## Overview
 
-Hammock Sync is a Java library designed to facilitate synchronization between CouchDB
-databases and Android applications. This library aims to provide seamless integration and reliable 
-data sync capabilities.
+Hammock Sync is a Java library for synchronizing CouchDB databases with Android
+and Java applications. It provides local JSON storage, indexing, querying, and
+application-controlled data synchronization.
 
 **Applications use Hammock Sync to store, index and query local JSON data on a
 device and to synchronise data between many devices. Synchronisation is under
@@ -15,23 +15,23 @@ system. Conflicts are also easy to manage and resolve, either on the local
 device or in the remote database.**
 
 Hammock Sync is an [Apache CouchDB&trade;][acdb]
-replication-protocol-compatible datastore for
-devices that don't want or need to run a full CouchDB instance. It was originally built
-by [Cloudant](https://cloudant.com), building on the work of many others and now maintained and modernized
-by the Hammock Sync project.
+replication-protocol-compatible datastore for devices that do not want or need
+to run a full CouchDB instance. It was originally built by
+[Cloudant](https://cloudant.com), building on the work of many others, and is
+now maintained and modernized by the Hammock Sync project.
 
-Hammock Sync project is a derivative work form Cloudant Sync for Android which has been abandoned by
-its original authors. Hammock Sync is a new effort for keeping this CouchDB Sync Client for Android
-and Java alive.
+The Hammock Sync project is a derivative work from Cloudant Sync for Android,
+which has been abandoned by its original authors. Hammock Sync continues this
+CouchDB sync client for Android and Java.
 
-Hammock Sync project is distributed under [Apache 2.0 licence][ap2] in the same form that the original
-project and keeps the original copyright on those elements retrieved from the original project.
+Hammock Sync is distributed under the [Apache License 2.0][license]. It retains
+the original copyright notices for elements derived from the original project.
 
-[ap2]: https://github.com/cloudant/sync-android/blob/master/LICENSE
-[acdb]: http://couchdb.apache.org/
+[license]: LICENSE
+[acdb]: https://couchdb.apache.org/
 
 The API is quite different from CouchDB's; we retain the
-[MVCC](http://en.wikipedia.org/wiki/Multiversion_concurrency_control) data
+[MVCC](https://en.wikipedia.org/wiki/Multiversion_concurrency_control) data
 model but not the HTTP-centric API.
 
 ## Features
@@ -48,12 +48,12 @@ be as simple as adding it as a dependency via [maven][maven] or [gradle][gradle]
 
 ```gradle
 dependencies {
-    implementation 'org.hammock-sync:datastore-android:1.0.0'
+    implementation 'org.hammock-sync:datastore-android:1.1.0'
 }
 ```
 
-[maven]: http://maven.apache.org/
-[gradle]: http://www.gradle.org/
+[maven]: https://maven.apache.org/
+[gradle]: https://gradle.org/
 
 There are currently four artifacts for the datastore, two jar and two aar:
 
@@ -81,16 +81,17 @@ We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for 
 | Component | Supported version |
 | --- | --- |
 | Android | API 29 and newer |
-| Java SE bytecode | Java 8 |
+| Java SE artifacts | Java 8 bytecode |
 | Android Java compatibility | Java 11 |
+| Build JDK | Java 17 |
 | Gradle | 8.14.3 |
 | Android Gradle Plugin | 8.13.2 |
 | Compile/target SDK | 36 |
-| CouchDB | CouchDB replication protocol-compatible servers |
+| CouchDB | 2.3.1, 3.4.3, and 3.5.1 validated by CI |
 
 ## License
 
-Hammock Sync is released under the MIT License. See the [LICENSE](LICENSE) file for more details.
+Hammock Sync is released under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
 
 ## Support
 

@@ -6,8 +6,8 @@ We welcome pull requests.
 
 ## General information
 
-Hammock Sync for Android is written in Java and uses [gradle](http://www.gradle.org) 
-as its build tool.
+Hammock Sync is written in Java and uses [Gradle](https://gradle.org) as its
+build tool.
 
 ### Coding guidelines
 
