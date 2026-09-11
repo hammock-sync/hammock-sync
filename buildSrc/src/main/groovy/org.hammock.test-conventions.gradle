@@ -1,0 +1,14 @@
+tasks.withType(Test).configureEach {
+    System.properties.each { prop ->
+        if (prop.key.startsWith("test")) {
+            systemProperty prop.key, prop.value
+        }
+    }
+    systemProperty "file.encoding", "UTF-8"
+    testLogging {
+        exceptionFormat = 'full'
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+    }
+}

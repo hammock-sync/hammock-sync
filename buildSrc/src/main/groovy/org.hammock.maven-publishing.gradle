@@ -1,0 +1,47 @@
+import org.hammock.MavenPublishingExtension
+
+plugins {
+    id 'maven-publish'
+    id 'signing'
+}
+
+extensions.create('hammockMaven', MavenPublishingExtension)
+
+afterEvaluate {
+    def configuration = extensions.getByType(MavenPublishingExtension)
+    def publication = publishing.publications.findByName(configuration.publicationName)
+    if (publication == null) {
+        publication = publishing.publications.create(configuration.publicationName, MavenPublication)
+    }
+
+    publication.pom {
+        name = configuration.name
+        description = configuration.description
+        url = 'https://github.com/hammock-sync/hammock-sync'
+        licenses {
+            license {
+                name = 'Apache-2.0'
+                url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+            }
+        }
+        developers {
+            developer {
+                name = 'Hammock Sync Team'
+                email = 'hammock-sync@lksnext.com'
+            }
+        }
+        scm {
+            connection = 'scm:git:git://github.com/hammock-sync/hammock-sync.git'
+            url = 'https://github.com/hammock-sync/hammock-sync'
+        }
+    }
+
+    publication.from components.getByName(configuration.componentName)
+
+    signing {
+        required = {
+            project.ext.isReleaseVersion && project.gradle.taskGraph.hasTask("publishToMavenLocal")
+        }
+        sign publication
+    }
+}
