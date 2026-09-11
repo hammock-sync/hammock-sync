@@ -1,0 +1,67 @@
+plugins {
+    id 'com.android.library'
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+def testConfig = "{" +
+        System.properties
+                .grep { prop -> prop.key.startsWith("test") }
+                .collect(new ArrayList()) { prop -> "{\"" + prop.key + "\",\"" + prop.value + "\"}" }
+                .join(",") +
+        "}"
+
+android {
+    compileSdk = 36
+    defaultConfig {
+        minSdk 29
+        targetSdk 36
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String[][]", "TEST_CONFIG", testConfig
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs "src/main/java"
+            res.srcDirs "src/main/res"
+        }
+        androidTest {
+            java.srcDirs = ["src/androidTest/java", "../datastore-core/src/test/java"]
+            java.exclude '**/Unreliable*Test*'
+        }
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+}
+
+configurations.configureEach {
+    resolutionStrategy.dependencySubstitution {
+        substitute module(libs.hamcrestCore.get().toString()) using module(libs.junit.get().toString())
+    }
+}
+
+tasks.register('copyFixtures', Copy) {
+    from '../fixture'
+    into 'src/androidTest/resources/fixture'
+}
+
+tasks.named('preBuild').configure {
+    dependsOn tasks.named('copyFixtures')
+}

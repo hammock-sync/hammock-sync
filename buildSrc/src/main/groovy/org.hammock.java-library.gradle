@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    toolchain {
+        sourceCompatibility = JavaLanguageVersion.of(8)
+        targetCompatibility = JavaLanguageVersion.of(8)
+    }
+    withJavadocJar()
+    withSourcesJar()
+}

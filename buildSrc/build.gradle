@@ -1,0 +1,14 @@
+plugins {
+    id 'groovy-gradle-plugin'
+}
+
+repositories {
+    gradlePluginPortal()
+    google()
+    mavenCentral()
+}
+
+dependencies {
+    implementation libs.androidGradlePlugin
+    implementation libs.spotbugsGradlePlugin
+}

@@ -1,11 +1,10 @@
 plugins {
-    id 'com.android.application'
+    id 'org.hammock.android-application'
     id 'androidx.navigation.safeargs'
 }
 
 android {
     namespace = 'org.hammock.sync.sample'
-    compileSdk = 36
 
     defaultConfig {
         applicationId "org.hammock.sync.sample"
@@ -13,7 +12,6 @@ android {
         targetSdk 36
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -23,24 +21,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
 }
 
 dependencies {
-
     implementation project(':datastore-android')
     implementation libs.appcompat
     implementation libs.preference
     implementation libs.navigationFragment
     implementation libs.navigationUi
-
     implementation libs.material
-}
-
-repositories {
-    google()
-    mavenCentral()
 }

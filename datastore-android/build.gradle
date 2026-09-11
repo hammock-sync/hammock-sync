@@ -1,71 +1,11 @@
-apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
-
-def testConfig = convertTestSysPropsToHash()
+plugins {
+    id 'org.hammock.android-library'
+    id 'org.hammock.maven-publishing'
+    id 'org.hammock.test-conventions'
+}
 
 android {
     namespace = 'org.hammock.sync'
-    compileSdk = 36
-    defaultConfig {
-        minSdk 29
-        targetSdk 36
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "String[][]", "TEST_CONFIG", testConfig
-    }
-
-    buildFeatures {
-        buildConfig = true
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
-
-    sourceSets {
-        main {
-            java {
-                srcDirs "src/main/java"
-            }
-            res {
-                srcDirs "src/main/res"
-            }
-        }
-        androidTest {
-            java {
-                srcDirs = ["src/androidTest/java" ,
-                           "../datastore-core/src/test/java"
-                ]
-                // we would exclude these via categories but it doesn't like the android runner respects them
-                exclude '**/Unreliable*Test*'
-                // some of these tests fail as follows:
-                // java.lang.OutOfMemoryError: Failed to allocate a
-                // 8204 byte allocation with 4194304 free bytes and
-                // 8MB until OOM; failed due to fragmentation
-                // (required contiguous free 12288 bytes where
-                // largest contiguous free 8192 bytes)
-                exclude '**/KeyManagerTests*'
-            }
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
-
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-            withJavadocJar()
-        }
-    }
-}
-
-configurations.configureEach {
-    resolutionStrategy.dependencySubstitution {
-        substitute module(libs.hamcrestCore.get().toString()) using module(libs.junit.get().toString())
-    }
 }
 
 dependencies {
@@ -74,7 +14,6 @@ dependencies {
     implementation libs.commonsCodec
     implementation libs.commonsIo
 
-    // for unit tests
     androidTestImplementation libs.hamcrestAll
     androidTestImplementation libs.junit
     androidTestImplementation libs.androidxTestJunit
@@ -83,59 +22,9 @@ dependencies {
     androidTestImplementation libs.dexmakerMockitoInline
 }
 
-repositories {
-    google()
-    mavenCentral()
-}
-
-tasks.register('copyFixtures', Copy) {
-    from '../fixture'
-    into 'src/androidTest/resources/fixture'
-}
-preBuild.dependsOn copyFixtures
-
-static def convertTestSysPropsToHash (){
-    return "{" +
-            System.properties
-                    .grep { prop -> prop.key.startsWith("test") }
-                    .collect(new ArrayList()) { prop -> "{\""+prop.key+"\",\""+ prop.value+"\"}"}
-                    .join(",") +
-            "}"
-}
-
-publishing {
-    publications {
-        release(MavenPublication) {
-            afterEvaluate {
-                from components.release
-            }
-            pom {
-                name = 'Hammock Sync Android Library'
-                description = 'Android implementation for the Hammock Sync Library'
-                url = 'https://github.com/hammock-sync/hammock-sync'
-                licenses {
-                    license {
-                        name = 'Apache-2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        name = 'Hammock Sync Team'
-                        email = 'hammock-sync@lksnext.com'
-                    }
-                }
-                scm {
-                    connection = 'scm:git:git://github.com/hammock-sync/hammock-sync.git'
-                    url = 'https://github.com/hammock-sync/hammock-sync'
-                }
-
-            }
-        }
-    }
-}
-
-signing {
-    required = { isReleaseVersion && gradle.taskGraph.hasTask("publishToMavenLocal")}
-    sign publishing.publications.release
+hammockMaven {
+    publicationName = 'release'
+    componentName = 'release'
+    name = 'Hammock Sync Android Library'
+    description = 'Android implementation for the Hammock Sync Library'
 }

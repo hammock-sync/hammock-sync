@@ -1,0 +1,17 @@
+import com.github.spotbugs.snom.Effort
+
+plugins {
+    id 'com.github.spotbugs'
+}
+
+spotbugs {
+    toolVersion = libs.versions.spotbugs.get()
+    effort = Effort.MAX
+    if (file("spotbugs_excludes.xml").exists()) {
+        excludeFilter = file("spotbugs_excludes.xml")
+    }
+}
+
+spotbugsTest {
+    enabled = false
+}
