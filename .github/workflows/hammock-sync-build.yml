@@ -3,6 +3,10 @@ name: Hammock Sync CI - Build
 on:
   pull_request:
     branches: [ main ]
+
+permissions:
+  contents: read
+
 env: 
   COUCHDB_USER: "admin"
   COUCHDB_PASSWORD: "password"

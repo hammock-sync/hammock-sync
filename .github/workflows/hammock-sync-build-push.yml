@@ -2,6 +2,9 @@ name: Hammock Sync CI - Build - Single Test
 
 on: push
 
+permissions:
+  contents: read
+
 env: 
   COUCHDB_USER: "admin"
   COUCHDB_PASSWORD: "password"
