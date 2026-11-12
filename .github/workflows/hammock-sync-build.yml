@@ -9,21 +9,21 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           java-version: '17'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew assemble
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-artifacts
           path: |
@@ -31,7 +31,7 @@ jobs:
             */build/
             .gradle/
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     strategy:
       matrix:
@@ -39,20 +39,20 @@ jobs:
       fail-fast: true
       max-parallel: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Download build artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: build-artifacts
       - name: set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           java-version: '17'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
          repository: jjrodrig/couchdb-action
          path: actions
@@ -65,23 +65,23 @@ jobs:
       - name: Test
         run: ./gradlew integrationTest --no-daemon -Dtest.with.specified.couch=true -Dtest.couch.username=$COUCHDB_USER -Dtest.couch.password=$COUCHDB_PASSWORD -Dtest.couch.uri=http://localhost:5984
   android-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Download build artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: build-artifacts
       - name: set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           java-version: '17'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
          repository: jjrodrig/couchdb-action
          path: actions
@@ -95,7 +95,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
       - name: AVD cache
         uses: actions/cache@v4
         id: avd-cache
@@ -127,9 +127,10 @@ jobs:
           script: ./gradlew connectedCheck --no-daemon -Dtest.with.specified.couch=true -Dtest.couch.username=$COUCHDB_USER -Dtest.couch.password=$COUCHDB_PASSWORD -Dtest.couch.uri=http://10.0.2.2:5984
       - name: Upload test reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: android-test-reports
+          if-no-files-found: ignore
           path: |
             datastore-android/build/reports/
             datastore-android-encryption/build/reports/
